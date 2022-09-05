@@ -18,7 +18,7 @@ public class App {
         {
             all+=notes[i];
         }
-        String calcResult=(all>=60)? "Gecti" : "Kaldi";
+        String calcResult=(all/notes.length>=60)? "Gecti" : "Kaldi";
         System.out.println("Sınıf Durumu :"+calcResult);
          
     }
