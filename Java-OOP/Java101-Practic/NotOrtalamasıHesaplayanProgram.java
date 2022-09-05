@@ -19,7 +19,7 @@ public class App {
             all+=notes[i];
         }
         String calcResult=(all/notes.length>=60)? "Gecti" : "Kaldi";
-        System.out.println("Sınıf Durumu :"+calcResult);
+        System.out.println("Sinif Durumu :"+calcResult+" Ortalama :"+all/notes.length);
          
     }
     static int readInt(Scanner sc,Object msg) {
