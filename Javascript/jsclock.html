@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        PatikaDev-Javascript-Clock
+    </title>
+    <style type="text/css">
+        * {
+            user-select: none;
+            offset: none;
+            outline: none;
+        }
+
+        body {
+            background-color: rgb(27, 27, 56);
+        }
+
+        .kodluyoruzlogo {
+            width: 50%;
+            margin-left: 25%;
+            margin-top: 5%;
+        }
+
+        .Parag {
+            width: 50%;
+            margin-left: 25%;
+            color: white;
+            font-family: courier;
+            text-align: center;
+            font-family: 3vw;
+            word-break: break-all;
+        }
+
+        .userName {
+            font-size: 6vw;
+            margin: 0;
+        }
+
+        i {
+            margin: 0;
+            font-size: 3vw;
+        }
+
+        .clock {
+            font-size: 15vw;
+            font-family: consolas;
+            color: rgb(51, 51, 105);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            position: fixed;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+
+<body onload="bodyLoaded()">
+    <img class="kodluyoruzlogo"
+        src="https://kodluyoruz.org/wp-content/uploads/2022/05/kodluyoruz_yatay_slogan.png"></img>
+    <p class="Parag">Wellcome to my first javascript project about PatikaDev/Javacsript Clock Task<br>
+        <span id="userName" class="userName">Wellcome</span>
+    </p>
+    <label id="clock" class="clock">
+        00.00.00
+    </label>
+
+</body>
+<script>
+    let username = document.getElementById("userName");
+    let clock = document.getElementById("clock");
+    function bodyLoaded() {
+        username.innerHTML = "<i>Wellcome</i><br> " + prompt("What is your name?");
+        settime();
+    }
+    function settime() {
+        let time = new Date();
+        clock.innerText = time.getHours() + "." + time.getMinutes() + "." + time.getSeconds();
+        setTimeout(settime, 500);
+    }
+</script>
+
+</html>
