@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        PatikaDev-Javascript-Note App
+    </title>
+    <style type="text/css">
+        * {
+            user-select: none;
+            offset: none;
+            outline: none;
+        }
+
+        body {
+            background-color: rgb(27, 27, 56);
+        }
+
+        .kodluyoruzlogo {
+            width: 36%;
+            margin-left: 32%;
+            margin-top: 2%;
+        }
+
+        .Parag {
+            width: 50%;
+            margin-left: 25%;
+            color: white;
+            font-family: courier;
+            text-align: center;
+            font-family: 3vw;
+            word-break: break-all;
+        }
+
+        .AddNoteHolder {
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 3%;
+            height: 7vw;
+            background-color: rgb(33, 33, 69);
+            position: relative;
+            color: white;
+            font-family: helvetica;
+            border-radius: 1vw;
+            box-shadow: 0 0 1vw 0.1vw rgb(69, 69, 122);
+            border: 0.1vw solid gray;
+        }
+
+        .NotesHolder {
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 2%;
+            margin-bottom: 10%;
+            height: 60vw;
+            background-color: rgb(50, 50, 103);
+            position: relative;
+            color: white;
+            font-family: helvetica;
+            border-radius: 1vw;
+            overflow: hidden;
+            box-shadow: 0 0 1vw 0.1vw rgb(69, 69, 122);
+            border: 0.1vw solid gray;
+            overflow-y: auto;
+        }
+
+        .NoteItem,
+        .NoteItem2 {
+            width: 100%;
+            background-color: rgb(85, 85, 154);
+            overflow: hidden;
+            border-bottom: 0.1vw solid gray;
+            transition: 0.2s;
+        }
+
+        .NoteItem2 {
+            background-color: rgb(109, 109, 199);
+        }
+
+        .NoteItem:hover,
+        .NoteItem2:hover {
+            transform: scale(0.99);
+        }
+
+        .NoteContent {
+            position: relative;
+            margin: 0.5vw;
+            width: 92%;
+            overflow-y: auto;
+            height: 5vw;
+            font-size: 1.3vw;
+            float: left;
+        }
+
+        .RemoveNote {
+            float: right;
+            right: 0;
+            top: 0;
+            width: 3vw;
+            height: 3vw;
+            border: none;
+            outline: none;
+            font-family: helvetica;
+            font-size: 1.5vw;
+            margin-top: 1.2vw;
+            border-radius: 0.5vw;
+            transition: 0.3s;
+            margin-right: 0.4vw;
+            border: 0.2vw solid silver;
+        }
+
+        .RemoveNote:hover {
+            background-color: silver;
+        }
+
+        .RemoveNote:active {
+            background-color: rgb(71, 71, 146);
+        }
+        .AddButton{
+            width: 5vw;
+            height: 4vw;
+            color: white;
+            background-color: rgb(72, 72, 136);
+            offset: none;
+            outline: none;
+            border: 0.1vw solid white;
+            border-radius: 0.5vw;
+            position: absolute;
+            bottom: -1vw;
+            right: 1vw;
+            font-size: 3vw;
+            box-shadow: 0vh 0vh 1vh 0.3vw rgb(33, 33, 69);
+            transition: 0.2s;
+        }
+        .AddButton:hover{
+            background-color: rgb(94, 94, 171); 
+        }
+        .AddButton:active{
+            background-color: rgb(52, 52, 98); 
+        }
+        .NoteInput{
+            width: 90%;
+            height: 80%;
+            outline: none;
+            border: 0;
+            margin-top: 1%;
+            margin-left: 1%;
+            offset: none;
+            background-color: transparent;
+            color: white;
+            font-family: Helvetica;
+            text-align: start;
+            resize: none;
+            font-size: 1.2vw;
+        }
+    </style>
+</head>
+
+
+<body onload="bodyLoaded()">
+    <img class="kodluyoruzlogo"
+        src="https://kodluyoruz.org/wp-content/uploads/2022/05/kodluyoruz_yatay_slogan.png"></img>
+    <p class="Parag">Wellcome to my javascript project about PatikaDev/<b>Js Take Note App</b></p>
+    <div class="AddNoteHolder">
+        <textarea class="NoteInput" id="NoteEntry"></textarea>
+        <button class="AddButton" id="AddButton" onclick="AddButtonOnClick()">+</button>
+    </div>
+    <div class="NotesHolder" id="NoteHolder">
+        <!-- <div class="NoteItem">
+            <p class="NoteContent">
+                testing environment with sample text
+            </p>
+            <button class="RemoveNote" target="abcxzatbc">X</button>
+        </div> -->
+    </div>
+</body>
+<script>
+    function bodyLoaded() {
+        GetNotes();
+    }
+    let NoteEntry=document.getElementById("NoteEntry");
+    let NoteHolder = document.getElementById("NoteHolder");
+    let NoteTableItems = 0;
+    if (localStorage.getItem("NoteAppItems") == null) {
+        NoteTableItems = localStorage.setItem("NoteAppItems", NoteHolder.children.length);
+    } else {
+        NoteTableItems = localStorage.getItem("NoteAppItems");
+    }
+
+    function CreateNote(txt) {
+        let itemID = "NoteAppItem" + NoteHolder.children.length;
+        localStorage.setItem(itemID, txt);
+        let item = document.createElement("div");
+        if ((NoteHolder.children.length + 1) % 2 == 0) {
+            item.setAttribute("class", "NoteItem2");
+        } else {
+            item.setAttribute("class", "NoteItem");
+        }
+        let paragraph = document.createElement("p");
+        paragraph.setAttribute("class", "NoteContent");
+        paragraph.innerText = txt;
+        let delitem = document.createElement("button");
+        delitem.setAttribute("class", "RemoveNote");
+        delitem.setAttribute("id", itemID);
+        delitem.innerText = "X";
+        delitem.onclick = (() => {
+            localStorage.removeItem(delitem.id);
+            NoteHolder.removeChild(item);
+            UpdateNoteTableItems();
+        });
+        item.appendChild(paragraph);
+        item.appendChild(delitem);
+        NoteHolder.appendChild(item);
+        UpdateNoteTableItems();
+    }
+    function UpdateNoteTableItems() {
+        NoteTableItems = localStorage.setItem("NoteAppItems", NoteHolder.children.length);
+    }
+    function GetNotes() {
+        for (let index = 0; index < NoteTableItems; index++) {
+            CreateNote(localStorage.getItem("NoteAppItem" + index));
+        }
+    }
+
+    function AddButtonOnClick(){
+        CreateNote(NoteEntry.value);
+        NoteEntry.value="";
+    }
+</script>
+
+</html>
