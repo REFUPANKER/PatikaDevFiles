@@ -115,7 +115,8 @@
         .RemoveNote:active {
             background-color: rgb(71, 71, 146);
         }
-        .AddButton{
+
+        .AddButton {
             width: 5vw;
             height: 4vw;
             color: white;
@@ -131,13 +132,16 @@
             box-shadow: 0vh 0vh 1vh 0.3vw rgb(33, 33, 69);
             transition: 0.2s;
         }
-        .AddButton:hover{
-            background-color: rgb(94, 94, 171); 
+
+        .AddButton:hover {
+            background-color: rgb(94, 94, 171);
         }
-        .AddButton:active{
-            background-color: rgb(52, 52, 98); 
+
+        .AddButton:active {
+            background-color: rgb(52, 52, 98);
         }
-        .NoteInput{
+
+        .NoteInput {
             width: 90%;
             height: 80%;
             outline: none;
@@ -174,21 +178,24 @@
     </div>
 </body>
 <script>
-    function bodyLoaded() {
-        GetNotes();
-    }
-    let NoteEntry=document.getElementById("NoteEntry");
+    let NoteEntry = document.getElementById("NoteEntry");
     let NoteHolder = document.getElementById("NoteHolder");
     let NoteTableItems = 0;
     if (localStorage.getItem("NoteAppItems") == null) {
-        NoteTableItems = localStorage.setItem("NoteAppItems", NoteHolder.children.length);
-    } else {
-        NoteTableItems = localStorage.getItem("NoteAppItems");
+        localStorage.setItem("NoteAppItems", 0);
+    }
+    NoteTableItems = parseInt(localStorage.getItem("NoteAppItems"));
+
+    function bodyLoaded() {
+        for (let index = 0; index < NoteTableItems; index++) {
+            CreateNote(localStorage.getItem("NoteAppItem" + parseInt(index+1)), false);
+        }
+        GetNotes();
+
     }
 
-    function CreateNote(txt) {
-        let itemID = "NoteAppItem" + NoteHolder.children.length;
-        localStorage.setItem(itemID, txt);
+    function CreateNote(txt, update = true) {
+        let itemID = "NoteAppItem" + parseInt(NoteHolder.children.length + 1);
         let item = document.createElement("div");
         if ((NoteHolder.children.length + 1) % 2 == 0) {
             item.setAttribute("class", "NoteItem2");
@@ -205,25 +212,34 @@
         delitem.onclick = (() => {
             localStorage.removeItem(delitem.id);
             NoteHolder.removeChild(item);
-            UpdateNoteTableItems();
+            NoteTableItems = parseInt(NoteTableItems) - 1;
+            updateLocal();
         });
         item.appendChild(paragraph);
         item.appendChild(delitem);
         NoteHolder.appendChild(item);
-        UpdateNoteTableItems();
+
+        if (update) {
+            localStorage.setItem(itemID, txt);
+            NoteTableItems = parseInt(NoteTableItems) + 1;
+            updateLocal();
+        }
+
     }
-    function UpdateNoteTableItems() {
-        NoteTableItems = localStorage.setItem("NoteAppItems", NoteHolder.children.length);
+    function updateLocal() {
+        localStorage.setItem("NoteAppItems", NoteTableItems);
     }
     function GetNotes() {
-        for (let index = 0; index < NoteTableItems; index++) {
-            CreateNote(localStorage.getItem("NoteAppItem" + index));
-        }
+        // for (let i = 0; i < parseInt(NoteTableItems); i++) {
+        //     console.log(NoteTableItems);
+        //     localStorage.getItem("NoteAppItem" + parseInt(i + 1));
+        //     //CreateNote(localStorage.getItem("NoteAppItem" + parseInt(i+1)),false);
+        // }
     }
 
-    function AddButtonOnClick(){
-        CreateNote(NoteEntry.value);
-        NoteEntry.value="";
+    function AddButtonOnClick() {
+        CreateNote(NoteEntry.value, true);
+        NoteEntry.value = "";
     }
 </script>
 
