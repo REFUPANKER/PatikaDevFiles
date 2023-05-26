@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        PatikaDev-Js-RestaurantMenu
+    </title>
+    <style type="text/css">
+        * {
+            user-select: none;
+            offset: none;
+            outline: none;
+            margin: 0;
+            font-family: helvetica;
+        }
+
+        body {
+            background-color: rgb(29, 29, 31);
+        }
+
+        .NavBar {
+            width: 100%;
+            background-color: rgb(39, 39, 39);
+            height: 20%;
+            overflow: hidden;
+            box-shadow: 0 0.2vw 1vw 0.2vw black;
+            z-index: 10;
+        }
+
+        .NavLogos,
+        .ResChefLogo {
+            width: 3vw;
+            height: 3vw;
+            border: none;
+            outline: none;
+            offset: none;
+            position: relative;
+            filter: invert(100);
+            margin: 0.5%;
+            transition: 0.2s;
+        }
+
+        .ResChefLogo :hover {
+            background-color: transparent;
+        }
+
+        .NavLogos:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .NavLogos:active {
+            background-color: rgba(100, 100, 100, 0.5);
+        }
+
+        .NavButtons {
+            border: 0.1vw solid gray;
+            outline: none;
+            offset: none;
+            position: absolute;
+            margin: 0.5%;
+            transition: 0.2s;
+            height: 3vw;
+            padding-left: 1.5vw;
+            padding-right: 1.5vw;
+            border-radius: 0.5vw;
+            color: white;
+            background-color: transparent;
+            font-size: 1.5vw;
+            position: relative;
+            display: inline;
+            white-space: pre;
+        }
+
+        .NavButtons:hover {
+            background-color: rgb(150, 150, 150);
+        }
+
+        .NavButtons:active {
+            background-color: rgb(35, 35, 35);
+        }
+
+        .kodluyoruzlogo {
+            width: 20%;
+            margin: 1%;
+            height: 2.3vw;
+            display: inline-block;
+            position: relative;
+        }
+
+        .ViewHolder {
+            height: 90%;
+            width: 100%;
+            position: absolute;
+            overflow-y: auto;
+        }
+
+        .ViewContent {
+            width: 97%;
+            height: 83vh;
+            margin: 1% 0% 0% 1%;
+            background-color: rgba(49, 46, 39, 0.7);
+            z-index: 1;
+            border-radius: 0.5vw;
+            overflow: hidden;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 24.25vw);
+            row-gap: 0.25vw;
+            padding: 0.5vw;
+            box-shadow: 0vh 0vh 0.5vw 0.05vw rgb(86, 74, 48);
+        }
+
+        .ItemHolder {
+            height: 13vw;
+            width: 24vw;
+            border: 0.1vw solid rgb(165, 165, 165);
+            border-radius: 0.5vw;
+            overflow: hidden;
+        }
+
+        .ItemHolder img {
+            width: 12vw;
+            height: 12vw;
+            margin: 0.5vw;
+            float: left;
+            border-radius: 0.5vw;
+        }
+
+        .ItemHolder p {
+            width: 10vw;
+            margin: 0.5vw;
+            height: 9vw;
+            float: right;
+            color: white;
+            overflow: hidden;
+            font-size: 1vw;
+        }
+
+        .ItemHolder b {
+            font-size: 1.2vw;
+        }
+
+        .ItemHolder button {
+            width: 10vw;
+            height: 2vw;
+            background-color: rgb(111, 108, 84);
+            color: white;
+            margin: 0.5vw;
+            border: none;
+            border-radius: 0.3vw;
+            float: right;
+            font-size: 1.2vw;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .ItemHolder button:hover {
+            background-color: rgb(193, 180, 69);
+        }
+
+        .ItemHolder button:active {
+            background-color: rgb(79, 77, 63);
+        }
+    </style>
+</head>
+
+
+<body onload="BodyOnLoad()">
+    <div class="NavBar">
+        <img class="kodluyoruzlogo"
+            src="https://kodluyoruz.org/wp-content/uploads/2022/05/kodluyoruz_yatay_slogan.png" />
+        <img class="ResChefLogo " src="https://cdn-icons-png.flaticon.com/512/180/180554.png" />
+        <img class="NavLogos" style="cursor:pointer;" src="https://cdn-icons-png.flaticon.com/512/2832/2832446.png" />
+        <div style="width: fit-content;display: inline-flex;position: absolute;margin: 0.5%;">
+            <button class="NavButtons" onclick="UpdateFilter('Hepsi')">Hepsi</button>
+            <button class="NavButtons" onclick="UpdateFilter('Ana Yemekler')">Ana Yemekler</button>
+            <button class="NavButtons" onclick="UpdateFilter('Çorbalar')">Çorbalar</button>
+            <button class="NavButtons" onclick="UpdateFilter('Tatlılar')">Tatlılar</button>
+            <button class="NavButtons" onclick="UpdateFilter('İçecekler')">İçecekler</button>
+            <button class="NavButtons" onclick="UpdateFilter('Diğer')">Diğer</button>
+        </div>
+    </div>
+    <div class="ViewHolder">
+        <div class="ViewContent" id="ViewContent">
+            <!-- <div class="ItemHolder">
+                <img src="https://cdn-icons-png.flaticon.com/512/604/604792.png">
+                <p>
+                    <b>Cag Gebabi</b>
+                    lezzetlidir
+                </p>
+                <button>Price 25</button>
+            </div> -->
+        </div>
+    </div>
+</body>
+<script>
+    let ItemsPanel = document.getElementById("ViewContent");
+    let Items = [
+        {
+            ID: 1,
+            Title: "Mercimek Çorbası",
+            Description: "Geleneksel Türk mutfağının vazgeçilmez çorbası",
+            Price: 12.99,
+            Category: "Çorbalar",
+            ImageSrc: "",
+        },
+        {
+            ID: 2,
+            Title: "Domates Çorbası",
+            Description: "Taze domateslerle yapılan lezzetli bir çorba",
+            Price: 10.99,
+            Category: "Çorbalar",
+            ImageSrc: "",
+        },
+        {
+            ID: 3,
+            Title: "Tarhana Çorbası",
+            Description: "Yoğurt ve tarhana ile hazırlanan geleneksel bir çorba",
+            Price: 14.99,
+            Category: "Çorbalar",
+            ImageSrc: ""
+        },
+        {
+            ID: 4,
+            Title: "Ezogelin Çorbası",
+            Description: "Kırmızı mercimek ve bulgur ile yapılan bir Türk çorbası",
+            Price: 11.99,
+            Category: "Çorbalar",
+            ImageSrc: ""
+        },
+        {
+            ID: 5,
+            Title: "Mantı Çorbası",
+            Description: "İçinde mantılar bulunan doyurucu bir çorba",
+            Price: 13.99,
+            Category: "Çorbalar",
+            ImageSrc: ""
+        },
+        {
+            ID: 6,
+            Title: "Tavuk Suyu Çorbası",
+            Description: "Lezzetli tavuk suyu bazlı bir çorba",
+            Price: 9.99,
+            Category: "Çorbalar",
+            ImageSrc: ""
+        },
+        {
+            ID: 7,
+            Title: "Yoğurtlu Çorba",
+            Description: "Yoğurt ile yapılan serinletici bir çorba",
+            Price: 8.99,
+            Category: "Çorbalar",
+            ImageSrc: "",
+        },
+        {
+            ID: 8,
+            Title: "Balık Çorbası",
+            Description: "Taze balıklarla hazırlanan nefis bir çorba",
+            Price: 15.99,
+            Category: "Çorbalar",
+            ImageSrc: "",
+        },
+        {
+            ID: 9,
+            Title: "Kremalı Mantar Çorbası",
+            Description: "Kremalı ve lezzetli bir mantar çorbası",
+            Price: 12.99,
+            Category: "Çorbalar",
+            ImageSrc: "",
+        },
+        {
+            ID: 10,
+            Title: "Sarı kola",
+            Description: "İnşaat ustaları için mükemmeldir",
+            Price: 15,
+            Category: "İçecekler",
+            ImageSrc: "",
+        },
+        {
+            ID: 10,
+            Title: "Coca Cola",
+            Description: "Sıcak günlerin serinleten lezzeti",
+            Price: 15,
+            Category: "İçecekler",
+            ImageSrc: "",
+        }, {
+            ID: 11,
+            Title: "Baklava",
+            Description: "Tatlı yiyip tatlı konuşmak için güzel bir başlangıç",
+            Price: 20,
+            Category: "Tatlılar",
+            ImageSrc: "",
+        }
+    ];
+    function BodyOnLoad() {
+        Items.forEach(element => {
+            CreateItem(element);
+        });
+    }
+    let CategoryLinks = [
+        "https://cdn-icons-png.flaticon.com/512/2387/2387954.png",//çorba
+        "https://cdn-icons-png.flaticon.com/512/2405/2405479.png",//içecek
+        "https://cdn-icons-png.flaticon.com/512/3081/3081949.png",//tatlı
+    ];
+    function CreateItem(NewItem) {
+        if (NewItem.ImageSrc != null && NewItem.ImageSrc == "") {
+            switch (NewItem.Category) {
+                case "Çorbalar":
+                    NewItem.ImageSrc = CategoryLinks[0];
+                    break;
+                case "İçecekler":
+                    NewItem.ImageSrc = CategoryLinks[1];
+                    break;
+                case "Tatlılar":
+                    NewItem.ImageSrc = CategoryLinks[2];
+                    break;
+            }
+        }
+        let itemStr = "<div class='ItemHolder'><img src='" + NewItem.ImageSrc + "'/><p><b>" + NewItem.Title + "</b><br>" + NewItem.Description + "</p><button>" + NewItem.Price + "TL</button></div>";
+        ItemsPanel.innerHTML += itemStr;
+    }
+
+    function UpdateFilter(filter) {
+        let targetArray = [];
+        if (filter == "Hepsi") {
+            targetArray = Items;
+        }
+        Items.forEach(e => {
+            if (e.Category == filter) {
+                targetArray.push(e);
+            }
+        });
+        ItemsPanel.innerHTML = '';
+        for (let i = 0; i < targetArray.length; i++) {
+            CreateItem(targetArray[i]);
+        }
+    }
+</script>
+
+</html>
