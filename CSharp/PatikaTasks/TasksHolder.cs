@@ -11,9 +11,9 @@ public class TasksHolder : FastCommands
     {
         Tasks.Add(new Task1(), "Stringi tersine çevirme");
         Tasks.Add(new Task2(), "Konsola üçgen çizme");
-        // for (int i = 0; i < 27; i++)
+        // for (int i = 0; i < 17; i++)
         // {
-        //     Tasks.Add(new Task2(), i + "th task");
+        //     Tasks.Add(new Task2(), (i+1) + "th task");
         // }
     }
 
@@ -25,6 +25,7 @@ public class TasksHolder : FastCommands
         while (CanConvertStringToInt(input) == null)
         {
             Console.Clear();
+            boundEnd = (boundEnd > Tasks.Count) ? (boundEnd - (boundEnd - Tasks.Count)) : boundEnd;
             ListTasksInBounds(boundStart, boundEnd);
             WriteLineColorized(ConsoleColor.Cyan, "Listing : [" + boundStart + "," + (boundEnd) + "] of " + Tasks.Count);
             WriteLineColorized(ConsoleColor.Yellow, "[!] type Task Index or 'e' for exit");
@@ -39,8 +40,13 @@ public class TasksHolder : FastCommands
             {
                 if (boundEnd + listingRange > Tasks.Count)
                 {
+
                     boundEnd -= boundEnd - Tasks.Count;
                     boundStart = boundEnd - listingRange;
+                    if (boundStart < 0)
+                    {
+                        boundStart = 0;
+                    }
                 }
                 else
                 {
@@ -61,9 +67,13 @@ public class TasksHolder : FastCommands
                     boundStart -= listingRange;
                 }
             }
-            if (converted != null && converted >= 0 && converted < Tasks.Count)
+            if (converted != null && converted >= 0 && converted <= Tasks.Count)
             {
-                Tasks.ElementAt(((int)converted)).Key.Run();
+                converted = (converted == 0) ? 0 : converted - 1;
+                KeyValuePair<TaskTheme, string> selectedTask = Tasks.ElementAt(((int)converted));
+                TaskRunningNotify(selectedTask.Key.GetType().Name);
+                WriteLineColorized(ConsoleColor.DarkCyan, "[</>]" + selectedTask.Value);
+                selectedTask.Key.Run();
             }
             else
             {
@@ -71,6 +81,7 @@ public class TasksHolder : FastCommands
             }
         }
     }
+
     void ListAllTasks()
     {
         foreach (var item in Tasks)
