@@ -32,9 +32,9 @@ public class FastCommands
         }
         return res;
     }
-    public string? ReadLine()
+    public string? ReadLine(string inputCursor=">")
     {
-        cw(">");
+        cw(inputCursor);
         return Console.ReadLine();
     }
     ConsoleColor precolor;
@@ -42,7 +42,7 @@ public class FastCommands
     {
         precolor = Console.ForegroundColor;
         Console.ForegroundColor = ConsoleColor.Yellow;
-        cwl("[!] Task running :" + name);
+        cwl("[!]Task running : " + name);
         Console.ForegroundColor = precolor;
     }
     public void WriteLineColorized(ConsoleColor color, object msg)

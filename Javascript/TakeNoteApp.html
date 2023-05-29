@@ -190,10 +190,7 @@
         for (let index = 0; index < NoteTableItems; index++) {
             CreateNote(localStorage.getItem("NoteAppItem" + parseInt(index+1)), false);
         }
-        GetNotes();
-
     }
-
     function CreateNote(txt, update = true) {
         let itemID = "NoteAppItem" + parseInt(NoteHolder.children.length + 1);
         let item = document.createElement("div");
@@ -228,13 +225,6 @@
     }
     function updateLocal() {
         localStorage.setItem("NoteAppItems", NoteTableItems);
-    }
-    function GetNotes() {
-        // for (let i = 0; i < parseInt(NoteTableItems); i++) {
-        //     console.log(NoteTableItems);
-        //     localStorage.getItem("NoteAppItem" + parseInt(i + 1));
-        //     //CreateNote(localStorage.getItem("NoteAppItem" + parseInt(i+1)),false);
-        // }
     }
 
     function AddButtonOnClick() {

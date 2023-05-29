@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Computer\\Documents\\Software\\PatikaDev\\CSharp\\PatikaTasks\\PatikaTasks.csproj": {}
+    "C:\\Users\\Computer\\Documents\\Software\\Github\\PatikaDevFiles\\CSharp\\PatikaTasks\\PatikaTasks.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Computer\\Documents\\Software\\PatikaDev\\CSharp\\PatikaTasks\\PatikaTasks.csproj": {
+    "C:\\Users\\Computer\\Documents\\Software\\Github\\PatikaDevFiles\\CSharp\\PatikaTasks\\PatikaTasks.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Computer\\Documents\\Software\\PatikaDev\\CSharp\\PatikaTasks\\PatikaTasks.csproj",
+        "projectUniqueName": "C:\\Users\\Computer\\Documents\\Software\\Github\\PatikaDevFiles\\CSharp\\PatikaTasks\\PatikaTasks.csproj",
         "projectName": "PatikaTasks",
-        "projectPath": "C:\\Users\\Computer\\Documents\\Software\\PatikaDev\\CSharp\\PatikaTasks\\PatikaTasks.csproj",
+        "projectPath": "C:\\Users\\Computer\\Documents\\Software\\Github\\PatikaDevFiles\\CSharp\\PatikaTasks\\PatikaTasks.csproj",
         "packagesPath": "C:\\Users\\Computer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Computer\\Documents\\Software\\PatikaDev\\CSharp\\PatikaTasks\\obj\\",
+        "outputPath": "C:\\Users\\Computer\\Documents\\Software\\Github\\PatikaDevFiles\\CSharp\\PatikaTasks\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Computer\\AppData\\Roaming\\NuGet\\NuGet.Config",

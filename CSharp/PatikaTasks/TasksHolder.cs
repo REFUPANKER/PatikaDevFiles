@@ -5,15 +5,17 @@ public class TasksHolder : FastCommands
         cwl("App moved into TaskHolder");
         InitTasks();
         ListTasksWithBoundControl();
+        //Tasks.ElementAt(2).Key.Run();
     }
     Dictionary<TaskTheme, string> Tasks = new Dictionary<TaskTheme, string>();
     void InitTasks()
     {
         Tasks.Add(new Task1(), "Stringi tersine çevirme");
         Tasks.Add(new Task2(), "Konsola üçgen çizme");
+        Tasks.Add(new Task3(), "Konsola daire çizme");
         // for (int i = 0; i < 17; i++)
         // {
-        //     Tasks.Add(new Task2(), (i+1) + "th task");
+        //     Tasks.Add(new Task2(), Tasks.Count + 1 + "th task");
         // }
     }
 
