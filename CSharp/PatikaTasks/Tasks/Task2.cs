@@ -1,4 +1,4 @@
-public class Task2 : FastCommands, TaskTheme
+class Task2 : FastCommands, TaskTheme
 {
     public void Run()
     {
@@ -9,13 +9,13 @@ public class Task2 : FastCommands, TaskTheme
             Console.Clear();
             WriteLineColorized(ConsoleColor.Yellow, "[!]Type negative number or 0 to exit");
             WriteColorized(ConsoleColor.Green, "Width :");
-            bound = CanConvertStringToInt(ReadLine("") + "");
+            bound = CanConvertStringToInt(ReadLine(""));
             if (bound <= 0)
             {
                 break;
             }
         }
-        string LeftChar = "■", RightChar = "■", BottomChar = "■",FillChar=" ";
+        string LeftChar = "■", RightChar = "■", BottomChar = "■", FillChar = " ";
         for (int i = 0; i < bound; i++)
         {
             cwl(CreateLine(" ", bound - i) + LeftChar + CreateLine(FillChar, (i) * 2) + RightChar + CreateLine(" ", bound - i));

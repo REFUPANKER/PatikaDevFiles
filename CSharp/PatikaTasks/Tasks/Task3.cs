@@ -13,7 +13,7 @@ class Task3 : FastCommands, TaskTheme
             Console.Clear();
             WriteLineColorized(ConsoleColor.Yellow, "[!]Type negative number or 0 to exit");
             WriteColorized(ConsoleColor.Green, "Radius :");
-            circRad = CanConvertStringToInt(ReadLine("") + "");
+            circRad = CanConvertStringToInt(ReadLine(""));
             if (circRad <= 0)
             {
                 break;

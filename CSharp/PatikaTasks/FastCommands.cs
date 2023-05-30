@@ -32,10 +32,10 @@ public class FastCommands
         }
         return res;
     }
-    public string? ReadLine(string inputCursor=">")
+    public string ReadLine(string inputCursor = ">")
     {
         cw(inputCursor);
-        return Console.ReadLine();
+        return Console.ReadLine() + "";
     }
     ConsoleColor precolor;
     public void TaskRunningNotify(string name)
