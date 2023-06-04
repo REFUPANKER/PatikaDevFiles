@@ -15,6 +15,10 @@ class Task2 : FastCommands, TaskTheme
                 break;
             }
         }
+        if (bound == null)
+        {
+            return;
+        }
         string LeftChar = "■", RightChar = "■", BottomChar = "■", FillChar = " ";
         for (int i = 0; i < bound; i++)
         {

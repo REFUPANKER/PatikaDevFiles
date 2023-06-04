@@ -13,14 +13,16 @@ public class TasksHolder : FastCommands
         Tasks.Add(new Task2(), "Konsola üçgen çizme");
         Tasks.Add(new Task3(), "Konsola daire çizme");
         Tasks.Add(new Task4(), "String içinden girilen noktadaki harfi silme");
+        Tasks.Add(new Task5(), "Fibonacci ortalama hesaplama");
+        Tasks.Add(new Task6(), "Geometrik şekil işlemleri alan,çevre,hacim vb");
         // for (int i = 0; i < 17; i++)
         // {
-        //     Tasks.Add(new Task2(), Tasks.Count + 1 + "th task");
+        //     Tasks.Add(new Task1(), Tasks.Count + 1 + "th task");
         // }
     }
 
     int listingRange = 5, boundStart = 0, boundEnd = 5;
-    void ListTasksWithBoundControl()
+    public void ListTasksWithBoundControl()
     {
         string input = "";
         int? converted = 0;
@@ -71,15 +73,24 @@ public class TasksHolder : FastCommands
             }
             if (converted != null && converted >= 0 && converted <= Tasks.Count)
             {
+                Console.Clear();
                 converted = (converted == 0) ? 0 : converted - 1;
                 KeyValuePair<TaskTheme, string> selectedTask = Tasks.ElementAt(((int)converted));
                 TaskRunningNotify(selectedTask.Key.GetType().Name);
                 WriteLineColorized(ConsoleColor.DarkCyan, "[</>]" + selectedTask.Value);
+                WriteLineColorized(ConsoleColor.Green, "Press enter to continue");
+                Console.ReadKey();
                 selectedTask.Key.Run();
+                WriteLineColorized(ConsoleColor.Yellow, $"{selectedTask.Key.GetType().Name} ended\nPress enter to continue ");
+                Console.ReadKey();
+                ListTasksWithBoundControl();
             }
-            else
+            else if (converted < 0 || converted > Tasks.Count)
             {
                 WriteLineColorized(ConsoleColor.Red, $"You cant select this Task index : {converted}");
+                WriteLineColorized(ConsoleColor.Yellow, "Press enter to continue ");
+                Console.ReadKey();
+                ListTasksWithBoundControl();
             }
         }
     }

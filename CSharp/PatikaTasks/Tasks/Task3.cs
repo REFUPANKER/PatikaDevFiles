@@ -6,7 +6,7 @@ class Task3 : FastCommands, TaskTheme
     string circleChar = " ■";
     public void Run()
     {
-        WriteLineColorized(ConsoleColor.White, "Console Triangle");
+        WriteLineColorized(ConsoleColor.White, "Console Circle");
         int? circRad = null;
         while (circRad == null)
         {
@@ -16,8 +16,13 @@ class Task3 : FastCommands, TaskTheme
             circRad = CanConvertStringToInt(ReadLine(""));
             if (circRad <= 0)
             {
+                circleChar = null;
                 break;
             }
+        }
+        if (circRad == null)
+        {
+            return;
         }
         table = new string[(int)circRad * 2, (int)circRad * 2];
         int x = 0, y = 0;

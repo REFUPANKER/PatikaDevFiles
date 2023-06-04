@@ -71,4 +71,18 @@ public class FastCommands
             return null;
         }
     }
+
+    public Exception? TryToDo(Action act)
+    {
+        try
+        {
+            act.Invoke();
+            return null;
+        }
+        catch (System.Exception excp)
+        {
+            return excp;
+        }
+    }
+
 }
