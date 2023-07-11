@@ -22,7 +22,7 @@ class Task2 : FastCommands, TaskTheme
         string LeftChar = "■", RightChar = "■", BottomChar = "■", FillChar = " ";
         for (int i = 0; i < bound; i++)
         {
-            cwl(CreateLine(" ", bound - i) + LeftChar + CreateLine(FillChar, (i) * 2) + RightChar + CreateLine(" ", bound - i));
+            cwl(CreateLine(" ", bound - i) + LeftChar + CreateLine(FillChar, (i) * 2) + RightChar + CreateLine(" ", bound));
         }
         cwl(CreateLine(BottomChar, (bound + 1) * 2));
     }

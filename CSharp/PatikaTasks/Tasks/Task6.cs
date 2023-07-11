@@ -28,6 +28,11 @@ class Task6 : FastCommands, TaskTheme
         public virtual void GetCornerValues()
         {
             Console.Clear();
+            if (CornerCount<=0)
+            {
+                WriteLineColorized(ConsoleColor.Yellow, "No Corners");
+                return;
+            }
             Corners = new int[CornerCount];
             bool exitVerified = false;
             int value = -1;
@@ -83,5 +88,18 @@ class Task6 : FastCommands, TaskTheme
             WriteLineColorized(ConsoleColor.Cyan, $"Left :{Corners[0]} | Bottom :{Corners[1]} | Right :{Corners[2]}");
             WriteLineColorized(ConsoleColor.Green, "Area :" + ((Corners[0] * Corners[1]) / 2));
         }
+        public override void CalcVolume()
+        {
+            WriteColorized(ConsoleColor.Cyan, "Radius :");
+            int r = Convert.ToInt32(CanConvertStringToInt(ReadLine("")));
+            WriteLineColorized(ConsoleColor.Green,Math.PI * Corners.Max() * r);
+        }
+    }
+
+    class Circle :GeoShape
+    {
+        public override string Name => "Circle";
+        public override int CornerCount => 0;
+
     }
 }
