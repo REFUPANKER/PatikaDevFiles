@@ -1,17 +1,20 @@
 <?php
-function ucgen($sayi)
-{
     echo "</br>";
-    for ($i = 0; $i < $sayi; $i++) {
-        $trash = $i;
-        for ($j = 0; $j < $sayi - $trash; $j++) {
-            echo "&nbsp;";
+    function ucgen($sayi)
+    {
+        for ($i = 0; $i < $sayi; $i++) {
+            $trash = $i;
+            for ($j = 0; $j < $sayi - $trash; $j++) {
+                echo "&nbsp;";
+            }
+            $line = "";
+            while ($trash >= 0) {
+                $line .= "o";
+                $trash -= 1;
+            }
+            echo $line.$line;
+            echo "</br>";
         }
-        while ($trash >= 0) {
-            echo "o";
-            $trash -= 1;
-        }
-        echo "</br>";
     }
-}
-ucgen(5);
+    ucgen(15);
+    echo "</br>";
