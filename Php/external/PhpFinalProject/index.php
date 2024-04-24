@@ -2,11 +2,11 @@
 
 <head>
     <title>What Is Next - Redirecting</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="./res/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="./res/style.css"/>
 </head>
 
-<body style="background-image: url('./res/rotatedTitle.png'); background-size:20%;" >
+<body>
     <div style="background-color: rgba(0,0,0,0.8);" class="d-flex flex-column justify-content-center align-items-center h-100 w-100">
         <h1>You need to account for continue</h1>
         <h3>Redirecting to auth page</h3>
@@ -22,7 +22,7 @@
                     countdown(time -= 1);
                 }, 1000);
             } else {
-                 window.open("./auth.php", "_self");
+                window.open("./auth.php", "_self");
             }
         }
         <?php

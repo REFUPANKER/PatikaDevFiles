@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once("./managers/dbm.php");
 if (!isset($_SESSION["authed"])) {
     header("location:auth.php");
 }
@@ -7,6 +7,7 @@ if (isset($_POST["logout"])) {
     unset($_SESSION["authed"]);
     header("location:index.php");
 }
+$user = selectData("select id,name,email from users where id= " . $_SESSION["user"] . ";");
 ?>
 <html>
 
@@ -16,11 +17,14 @@ if (isset($_POST["logout"])) {
     <link rel="stylesheet" href="./res/style.css">
 </head>
 
-<body>
-    <div class="bgCl6 text-white d-flex flex-row w-100 justify-content-around">
-        <h1>its home</h1>
-        <form method="post"><button name="logout" value="1">Logout</button></form>
+<body style="display:grid;grid-template-rows: min-content auto;">
+    <div class="home-navbar">
+        <div class="home-profile-img" style="<?php getUserImage($user["id"]); ?>"></div>
+        <form method="post">
+            <button type="submit" class="home-logout-btn" name="logout" value="1">Logout</button>
+        </form>
     </div>
+    <div style="background-color: rgba(0,0,0,0.8);" class="d-flex w-100 overflow-auto justify-content-center align-items-center"></div>
 </body>
 
 </html>

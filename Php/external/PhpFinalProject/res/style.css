@@ -1,56 +1,101 @@
 :root {
     --cl1: rgb(0, 1, 5);
-    --cl2: rgb(21, 29, 62);
-    --cl3: rgb(48, 64, 123);
+    --cl2: rgb(8, 13, 32);
+    --cl3: rgb(37, 62, 142);
     --cl4: rgb(199, 101, 16);
     --cl5: rgb(17, 169, 40);
     --cl6: rgb(152, 24, 24);
-  }
-  
-  .bgCl1 { background-color: var(--cl1); }
-  .fgCl1 { color: var(--cl1); }
-  .bgCl2 { background-color: var(--cl2); }
-  .fgCl2 { color: var(--cl2); }
-  .bgCl3 { background-color: var(--cl3); }
-  .fgCl3 { color: var(--cl3); }
-  .bgCl4 { background-color: var(--cl4); }
-  .fgCl4 { color: var(--cl4); }
-  .bgCl5 { background-color: var(--cl5); }
-  .fgCl5 { color: var(--cl5); }
-  .bgCl6 { background-color: var(--cl6); }
-  .fgCl6 { color: var(--cl6); }
-  
+}
+
+.bgCl1 {
+    background-color: var(--cl1);
+}
+
+.fgCl1 {
+    color: var(--cl1);
+}
+
+.bgCl2 {
+    background-color: var(--cl2);
+}
+
+.fgCl2 {
+    color: var(--cl2);
+}
+
+.bgCl3 {
+    background-color: var(--cl3);
+}
+
+.fgCl3 {
+    color: var(--cl3);
+}
+
+.bgCl4 {
+    background-color: var(--cl4);
+}
+
+.fgCl4 {
+    color: var(--cl4);
+}
+
+.bgCl5 {
+    background-color: var(--cl5);
+}
+
+.fgCl5 {
+    color: var(--cl5);
+}
+
+.bgCl6 {
+    background-color: var(--cl6);
+}
+
+.fgCl6 {
+    color: var(--cl6);
+}
+
 body {
     margin: 0;
     overflow: auto;
     height: 100vh;
     width: 100%;
     background-color: var(--cl1);
-    color:white;
+    color: white;
     font-family: "lucida console";
+    background-image: url('./rotatedTitle.png');
+    background-size: 20%;
 }
-.authuibutton{
-    width:100%;
-    height:100%;
-    border:0;
-    color:white;
+button{
+    border: none;
+}
+
+.authuibutton {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    color: white;
     background-color: transparent;
     transition: 0.2s;
 }
-.authuibutton:hover{
+
+.authuibutton:hover {
     background-color: var(--cl3);
 }
-#authform{
+
+#authform {
     height: min-content;
     text-align: left;
 }
-#authform input{
+
+#authform input {
     font-size: 1.3rem;
     background-color: var(--cl3);
-    color:white;
-    border:0.1vmax solid var(--cl3);
+    color: white;
+    border: 0.1vmax solid var(--cl3);
 }
-#authform button{
+
+#authform button {
     margin-top: 1rem;
     padding: 0.5rem;
     border: 0;
@@ -58,6 +103,32 @@ body {
     background-color: var(--cl5);
     transition: 0.3s;
 }
-#authform button:hover{
+
+#authform button:hover {
     background-color: rgb(16, 133, 33);
+}
+
+.home-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+}
+.home-profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 25%;
+    background-color: transparent;
+    border: 0.1vmax solid white; 
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+.home-logout-btn {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
 }
