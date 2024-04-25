@@ -22,14 +22,6 @@ if (isset($_SESSION["authed"])) {
             </div>
             <div>
                 <?php
-                function getPostValue($v)
-                {
-                    if (isset($_POST[$v])) {
-                        return $_POST[$v];
-                    } else {
-                        return null;
-                    }
-                }
                 if (isset($_POST["sent"])) {
 
                     if (isset($_GET["signup"])) {

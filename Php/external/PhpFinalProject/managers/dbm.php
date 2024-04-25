@@ -7,6 +7,24 @@ if ($con->connect_error) {
 
 session_start();
 $inactive = 600;
+
+function getPostValue($v)
+{
+    if (isset($_POST[$v])) {
+        return $_POST[$v];
+    } else {
+        return null;
+    }
+}
+function getFileValue($v)
+{
+    if (isset($_FILES[$v])) {
+        return $_FILES[$v];
+    } else {
+        return null;
+    }
+}
+
 function reqQuery($qstr)
 {
     global $con;
@@ -27,14 +45,22 @@ function addUser($name, $email, $password)
 {
     reqQuery("insert into users (name,email,password) values (\"" . $name . " \",\"" . $email . "\",\"" . $password . "\")");
 }
-function updateUserImage()
+function updateUserImage($image)
 {
-    //TODO:fix
     global $con;
     $id = (int)$_SESSION["user"];
-    $img = file_get_contents("./res/user.png");
-    $stmt = $con->prepare("INSERT INTO profileimages (user, image) VALUES (?, ?)");
-    $stmt->bind_param("is", $id, $img);
+    $getImg = selectData("select user from profileImages where user=" . $id);
+    $img = file_get_contents($image);
+    $q = "";
+    if (isset($getImg)) {
+        $q = "update profileimages set image = ? where user=" . $id;
+        $stmt = $con->prepare($q);
+        $stmt->bind_param("s", $img);
+    } else {
+        $q = "INSERT INTO profileimages (user, image) VALUES (?, ?)";
+        $stmt = $con->prepare($q);
+        $stmt->bind_param("is", $id, $img);
+    }
     $stmt->execute();
     $stmt->close();
 }

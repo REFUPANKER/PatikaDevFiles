@@ -19,12 +19,20 @@ $user = selectData("select id,name,email from users where id= " . $_SESSION["use
 
 <body style="display:grid;grid-template-rows: min-content auto;">
     <div class="home-navbar">
-        <div class="home-profile-img" style="<?php getUserImage($user["id"]); ?>"></div>
-        <form method="post">
+        <a title="Profile" href="./profile.php" class="home-profile-img" style="<?php getUserImage($user["id"]); ?>"></a>
+        <form method="post"  class="h-100 bg-dark m-0 p-0">
             <button type="submit" class="home-logout-btn" name="logout" value="1">Logout</button>
         </form>
     </div>
-    <div style="background-color: rgba(0,0,0,0.8);" class="d-flex w-100 overflow-auto justify-content-center align-items-center"></div>
+    <div style="background-color: rgba(0,0,0,0.8);" class="d-flex w-100 overflow-auto p-2">
+        <?php
+        if (isset($_GET["view"])) {
+            require_once($_GET["view"]);
+        } else {
+
+        }
+        ?>
+    </div>
 </body>
 
 </html>
