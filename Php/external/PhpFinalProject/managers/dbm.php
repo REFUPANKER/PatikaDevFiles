@@ -45,6 +45,10 @@ function addUser($name, $email, $password)
 {
     reqQuery("insert into users (name,email,password) values (\"" . $name . " \",\"" . $email . "\",\"" . $password . "\")");
 }
+function getUser($id)
+{
+    return selectData("select id,name from users where id= " . $id . ";");
+}
 function updateUserImage($image)
 {
     global $con;

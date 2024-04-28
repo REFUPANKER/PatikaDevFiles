@@ -35,15 +35,41 @@ if (!isset($_SESSION["authed"])) {
             }
         }
         ?>
-        <div class="bgimg" style="width: 5vmax;height:5vmax;border:0.3vmax solid white;background-color: rgba(255,255,255,0.5);margin:1vmax;border-radius: 0.5vmax;<?php getUserImage($_SESSION["user"]); ?>">
+        <div class="d-flex flex-row w-100 p-2">
+            <div class="bgimg" style="width: 10vmax;height:10vmax;border:0.3vmax solid white;background-color: rgba(255,255,255,0.5);border-radius: 0.5vmax;<?php getUserImage($_SESSION["user"]); ?>"></div>
+            <p class="p-1">
+                <?php
+                foreach (getUser($_SESSION["user"]) as $key => $value) {
+                    echo $key . " : " . $value . "<br>";
+                }
+                ?>
+            </p>
+        </div>
+        <div class="d-flex flex-column w-100 justify-content-center align-items-center">
+            <form method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+                <h2>change profile photo</h2>
+                <input id="pfpslct" onchange="onProfileImageSelected()" class="w-100" type="file" name="pfp" title="select file" accept="image/jpeg, image/png">
+                <button class="w-100 p-1" type="submit" name="updatePfp" value="1">update photo</button>
+                <p class="w-100 bg-dark p-1">size limit : <?php echo $sizeLimit . "mb" ?></p>
+                <h6>selected image</h6>
+                <div id="selectedImage" class="bgimg" style="width: 7vmax;height:7vmax;border:0.3vmax solid orange;background-color: rgba(255, 68, 0, 0.5);border-radius: 0.5vmax;"></div>
+            </form>
 
         </div>
-        <form method="post" enctype="multipart/form-data" class="d-flex flex-column" style="width: min-content;">
-            <input type="file" name="pfp" title="select file" accept="image/jpeg, image/png">
-            <button type="submit" name="updatePfp" value="1">update photo</button>
-            size limit is <?php echo $sizeLimit . "mb" ?>
-        </form>
     </div>
 </body>
+<script>
+    function onProfileImageSelected() {
+        var pfpfile = document.getElementById("pfpslct");
+        var pfpimg = document.getElementById("selectedImage");
+        if (pfpfile.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                pfpimg.style.backgroundImage = "url('" + e.target.result + "')";
+            }
+            reader.readAsDataURL(pfpfile.files[0]);
+        }
+    }
+</script>
 
 </html>
