@@ -25,17 +25,86 @@ function getFileValue($v)
     }
 }
 
-function reqQuery($qstr)
+function reqQuery($qstr, $params = [])
 {
     global $con;
-    return mysqli_query($con, $qstr);
+
+    if (!empty($params)) {
+        $stmt = $con->prepare($qstr);
+        if ($stmt === false) {
+            return;
+        }
+
+        $types = '';
+        $bindParams = [];
+        foreach ($params as $param) {
+            if (is_int($param)) {
+                $types .= 'i';
+            } elseif (is_float($param)) {
+                $types .= 'd';
+            } elseif (is_string($param)) {
+                $types .= 's';
+            } else {
+                $types .= 's';
+            }
+            $bindParams[] = $param;
+        }
+
+        if (!empty($bindParams)) {
+            $stmt->bind_param($types, ...$bindParams);
+        }
+        $stmt->execute();
+        return $stmt;
+    } else {
+        return mysqli_query($con, $qstr);
+    }
 }
 
-function selectData($qstr)
+function selectData($qstr, $params = [], $single = true)
 {
     global $con;
-    return mysqli_fetch_assoc(mysqli_query($con, $qstr));
+    if (!empty($params)) {
+        $stmt = $con->prepare($qstr);
+        if ($stmt === false) {
+            return;
+        }
+        $types = '';
+        $bindParams = [];
+        foreach ($params as $param) {
+            if (is_int($param)) {
+                $types .= 'i';
+            } elseif (is_float($param)) {
+                $types .= 'd';
+            } elseif (is_string($param)) {
+                $types .= 's';
+            } else {
+                $types .= 's';
+            }
+            $bindParams[] = $param;
+        }
+        if (!empty($bindParams)) {
+
+            $stmt->bind_param($types, ...$bindParams);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if (!$result) {
+            return;
+        }
+        $row = ($single == true ? $result->fetch_assoc() : $result->fetch_all());
+        $stmt->close();
+        return $row;
+    } else {
+        $result = mysqli_query($con, $qstr);
+        if (!$result) {
+            return;
+        }
+        $row = ($single == true ? mysqli_fetch_assoc($result) : mysqli_fetch_all($result));
+        mysqli_free_result($result);
+        return $row;
+    }
 }
+
 function lastId()
 {
     global $con;
@@ -43,17 +112,25 @@ function lastId()
 }
 function addUser($name, $email, $password)
 {
-    reqQuery("insert into users (name,email,password) values (\"" . $name . " \",\"" . $email . "\",\"" . $password . "\")");
+    reqQuery("insert into users (name,email,password) values (?,?,?)", [$name, $email, $password]);
 }
 function getUser($id)
 {
-    return selectData("select id,name from users where id= " . $id . ";");
+    return selectData("select id,name,active from users where id= ?;", [$id]);
+}
+function checkAuth($target = "home.php")
+{
+    if (isset($_SESSION["authed"])) {
+        return true;
+    }
+    header("location:auth.php");
+    return false;
 }
 function updateUserImage($image)
 {
     global $con;
     $id = (int)$_SESSION["user"];
-    $getImg = selectData("select user from profileImages where user=" . $id);
+    $getImg = selectData("select user from profileImages where user= ?", [$id]);
     $img = file_get_contents($image);
     $q = "";
     if (isset($getImg)) {
@@ -84,11 +161,58 @@ function getUserImage($id)
         echo "background-image:url('./res/user.png')";
     }
 }
-function checkAuth()
+
+//TODO:fix sql injections
+// NEXTS start
+
+function PostNextText($title, $content, $categories = [])
 {
-    if (isset($_SESSION["authed"])) {
-        header("location:home.php");
+    $nextsStmt = reqQuery("INSERT INTO nexts (user, type) VALUES (?, 1)", [$_SESSION["user"]]);
+    $nextsId = $nextsStmt->insert_id;
+    reqQuery("INSERT INTO n_Text (nextId, title, content) VALUES (?, ?, ?)", [$nextsId, $title, $content]);
+    if (isset($categories) && count($categories) > 0) {
+        $qPointers = "";
+        for ($i = 0; $i < count($categories); $i++) {
+            $qPointers .= "($nextsId,?)";
+            if ($i + 1 < count($categories)) {
+                $qPointers .= ",";
+            }
+        }
+        
+        $q = "insert into n_categories (nextId,category) values $qPointers";
+        echo $q;
+        reqQuery($q, $categories);
+    }
+    return "posted";
+}
+
+function RemoveNextText($id)
+{
+    if (CheckUserIsOwnerOfNext($id)) {
+        reqQuery("delete from n_text where id=?", [$id]);
+        //next gets removed with trigger
+        return "deleted";
     } else {
-        header("location:auth.php");
+        return;
     }
 }
+function CheckUserIsOwnerOfNext($nextId)
+{
+    $isOwnerOfNext = selectData("select 1 from nexts where user=? and id=?", [$_SESSION["user"], $nextId]);
+    if (isset($isOwnerOfNext)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function EditNextText($id)
+{
+    if (CheckUserIsOwnerOfNext($id)) {
+        return "confirmed";
+    } else {
+        return;
+    }
+}
+
+// NEXTS end

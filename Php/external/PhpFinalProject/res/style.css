@@ -128,7 +128,7 @@ button {
     border-bottom: 0.2vmax solid white;
     background-color: rgba(114, 114, 114, 0.5);
     background-position: center;
-    background-size: 90%;
+    background-size: contain;
     background-repeat: no-repeat;
 }
 
@@ -142,26 +142,38 @@ button {
     padding-right: 2rem;
 }
 
+.whatisnextBackground {
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height:fit-content;
+}
+
 .bgimg {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
-.whatisnextbtn ,.whatisnextbtn *{
+.whatisnextbtn,
+.whatisnextbtn * {
     transition: 0.3s;
     color: white;
     background-position: left;
     background-size: 10%;
 }
+
 .whatisnextbtn:hover {
     background-image: url("./next.png");
     color: rgba(255, 255, 255);
     background-position: center;
 }
+
 .whatisnextbtn:hover :nth-child(1) {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     align-content: center;
     font-size: 1.4rem;

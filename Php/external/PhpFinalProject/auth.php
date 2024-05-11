@@ -23,9 +23,8 @@ if (isset($_SESSION["authed"])) {
             <div>
                 <?php
                 if (isset($_POST["sent"])) {
-
                     if (isset($_GET["signup"])) {
-                        $vals = selectData("select * from users where email=\"" . $_POST["email"] . "\" ");
+                        $vals = selectData("select * from users where email=? ", [$_POST["email"]]);
                         if (isset($vals)) {
                             echo "<h5 class=\"alert alert-danger p-2\">account already exists</h5>";
                         } else {
@@ -35,7 +34,7 @@ if (isset($_SESSION["authed"])) {
                             header("location:home.php");
                         }
                     } else {
-                        $vals = selectData("select * from users where email=\"" . $_POST["Lemail"] . "\" ");
+                        $vals = selectData("select * from users where email=? ", [$_POST["Lemail"]]);
                         if (isset($vals)) {
                             if ($_POST["Lpassword"] == $vals["password"]) {
                                 $_SESSION["authed"] = "true";

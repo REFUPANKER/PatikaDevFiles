@@ -26,7 +26,7 @@ so yea , its **all in one** app
 
 <h4 id="basicsocialmedia" style="text-transform:uppercase;">basic social media</h4>
 <div style="height:50vh;">
-only images<i> (currently we cant handle videos) </i> or texts like <b>X</b> <i>(a.k.a twitter)</i>
+texts ,images and videos like <b>X</b> <i>(a.k.a twitter)</i>
 <br><a href="#top"><i>back to top</i></a>
 </div>
 <h4 id="news" style="text-transform:uppercase;">news</h4>

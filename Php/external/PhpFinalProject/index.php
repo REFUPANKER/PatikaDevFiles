@@ -14,7 +14,6 @@
     </div>
     <script>
         const cd = document.getElementById("cd");
-
         function countdown(time) {
             if (time >= 0) {
                 setTimeout(() => {
