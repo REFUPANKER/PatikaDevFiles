@@ -66,14 +66,14 @@ if (!isset($_SESSION["authed"])) {
                 $nTexts = selectData("select nt.id,nt.title,nt.content,n.user from n_text as nt inner join nexts as n on nt.nextId=n.id and n.user=?;", [$_SESSION["user"]], false);
                 foreach ($nTexts as $key) {
                 ?>
-            <div <?php echo "id=\"text$key[0]\"" ?> class="w-75" style="background-color:rgb(45,45,45);margin:1vmax;padding:0.5vmax;border-radius:0.5vmax;">
+            <div <?php echo "id=\"text$key[0]\"" ?> class="w-75 m-2 p-3" style="background-color:#202020;border-radius:0.5vmax;">
                 <?php
                     echo "<h2 style='margin:0;'>" . htmlspecialchars($key[1]) . "</h2>";
-                    echo htmlspecialchars($key[2]);
+                    echo "<p style='width:min-content;word-break:pre-line;white-space:pre;'>".htmlspecialchars($key[2])."</p>";
                 ?>
-                <br>
-                <button class='m-2' <?php echo "onclick=\"RemoveNext_TextClick('$key[0]')\"" ?>>Remove</button>
-                <form class='m-2' action="editnext.php" method="post"><button  name="nextId" value="<?php echo "$key[0]" ?>">Edit</button></form>
+                <br></br>
+                <button class=' btn bgCl2hover text-white border border-white' <?php echo "onclick=\"RemoveNext_TextClick('$key[0]')\"" ?>>Remove</button>
+                <form class='d-inline' action="editnext.php" method="post"><button  name="nextId" class="btn bgCl2hover text-white border border-white" value="<?php echo "$key[0]" ?>">Edit</button></form>
             </div>
         <?php } ?>
         </p>

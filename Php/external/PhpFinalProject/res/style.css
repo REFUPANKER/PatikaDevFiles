@@ -15,8 +15,14 @@
     color: var(--cl1);
 }
 
-.bgCl2 {
+.bgCl2,
+.bgCl2hover {
     background-color: var(--cl2);
+}
+
+.bgCl2hover:hover {
+    transition: 0.3s;
+    background-color: var(--cl3);
 }
 
 .fgCl2 {
@@ -26,6 +32,8 @@
 .bgCl3 {
     background-color: var(--cl3);
 }
+
+
 
 .fgCl3 {
     color: var(--cl3);
@@ -148,7 +156,7 @@ button {
     left: 0;
     top: 0;
     width: 100%;
-    height:fit-content;
+    height: fit-content;
 }
 
 .bgimg {
@@ -179,26 +187,31 @@ button {
     font-size: 1.4rem;
 }
 
-.SmallCategoryCard{
+.SmallCategoryCard {
     background-color: #252525;
     border: 0.1vmax solid silver;
-    color:white;
+    color: white;
     cursor: pointer;
-    padding:0.5rem;
-    margin:0.2rem;
+    padding: 0.5rem;
+    margin: 0.2rem;
     border-radius: 0.3vmax;
     font-size: 0.7rem;
     transition: 0.3s;
 }
-.SmallCategoryCard:hover{
+
+.SmallCategoryCard:hover {
     background-color: #3e3e3e;
 }
-.RemoveSmallCategoryCard,.SaveSmallCategoryCard{
+
+.RemoveSmallCategoryCard,
+.SaveSmallCategoryCard {
     transition: 0.3s;
 }
-.RemoveSmallCategoryCard:hover{
+
+.RemoveSmallCategoryCard:hover {
     background-color: #902020;
 }
-.SaveSmallCategoryCard:hover{
+
+.SaveSmallCategoryCard:hover {
     background-color: #209045;
 }

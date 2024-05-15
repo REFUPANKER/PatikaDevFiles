@@ -88,11 +88,11 @@ checkAuth();
                     success: function(obj, textstatus) {
                         if (obj != "null") {
                             edited = true;
-                            receipt += "Next Edited\nRedirecting to profile (in 3 sec)";
+                            receipt += "Next Edited\nRedirecting to profile (in 1 sec)";
                             alert(receipt);
                             setTimeout(() => {
                                 window.open("./", "_self");
-                            }, 3000);
+                            }, 1000);
                         }
                     }
                 });
