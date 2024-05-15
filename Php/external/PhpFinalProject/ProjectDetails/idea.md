@@ -36,7 +36,6 @@ we are going to use news api,users will be able to chat under news topics
 </div>
 <h4 id="todo" style="text-transform:uppercase;">todo</h4>
 <div style="height:50vh;">
-
 basicially its what its saying : to do app
 <br><a href="#top"><i>back to top</i></a>
 </div>

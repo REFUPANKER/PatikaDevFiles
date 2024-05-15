@@ -24,7 +24,7 @@ id int primary key AUTO_INCREMENT,
 type varchar(256)
 );
 insert into nextsTypes (type) values ("text"),("image"),("video");
-"""
+/*
 explaintation
 user -> create nexts -> 
 id   : nextsId 
@@ -34,7 +34,7 @@ type : NextSType
 fetchs data by type with id of nexts;
 in select query , first gets nextS id and type
 then routes query to target class with selected type
-"""
+*/
 drop table if exists nexts;
 create table nexts (
 id int primary key AUTO_INCREMENT,
@@ -66,25 +66,19 @@ video mediumblob,
 descr varchar(500)
 );
 
--- TODO:change -> del from src:nexts to del from src:n_text 
--- because it causing to type issues
-"""
-so : if we delete Next from n_TYPE
-trigger runs and gets nextId , then uses for remove NEXT from nexts table
-so removing n_TYPE row is enough to remove NEXT
-"""
+-- drop table if exists n_categories;
+-- create table n_categories(
+-- id int primary key AUTO_INCREMENT,
+-- nextId int,
+-- category varchar(256)
+-- );
+
+DELIMITER $
 create trigger bNextTextDelete
 before delete on n_text
 for each row
 BEGIN
 	delete from nexts where id=old.nextid;
-    delete from n_c_text where nextid=old.nextid;
-END;
-
-drop table if exists n_categories;
-create table n_categories(
-id int primary key AUTO_INCREMENT,
-nextId int,
-category varchar(256)
-);
+END
+DELIMITER ;
 

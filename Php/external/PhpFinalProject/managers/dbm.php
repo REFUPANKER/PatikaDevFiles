@@ -165,24 +165,11 @@ function getUserImage($id)
 //TODO:fix sql injections
 // NEXTS start
 
-function PostNextText($title, $content, $categories = [])
+function PostNextText($title, $content)
 {
     $nextsStmt = reqQuery("INSERT INTO nexts (user, type) VALUES (?, 1)", [$_SESSION["user"]]);
     $nextsId = $nextsStmt->insert_id;
     reqQuery("INSERT INTO n_Text (nextId, title, content) VALUES (?, ?, ?)", [$nextsId, $title, $content]);
-    if (isset($categories) && count($categories) > 0) {
-        $qPointers = "";
-        for ($i = 0; $i < count($categories); $i++) {
-            $qPointers .= "($nextsId,?)";
-            if ($i + 1 < count($categories)) {
-                $qPointers .= ",";
-            }
-        }
-        
-        $q = "insert into n_categories (nextId,category) values $qPointers";
-        echo $q;
-        reqQuery($q, $categories);
-    }
     return "posted";
 }
 
@@ -196,6 +183,18 @@ function RemoveNextText($id)
         return;
     }
 }
+
+function EditNextText($id, $title, $content)
+{
+    if (CheckUserIsOwnerOfNext($id)) {
+        reqQuery("update n_text set " . ($title != "" ? "title=?"  : "") . ($content != "" ? ",content=?" : "") . " where id=?", [$title, $content, $id]);
+        return "confirmed";
+    } else {
+        return;
+    }
+}
+
+
 function CheckUserIsOwnerOfNext($nextId)
 {
     $isOwnerOfNext = selectData("select 1 from nexts where user=? and id=?", [$_SESSION["user"], $nextId]);
@@ -203,15 +202,6 @@ function CheckUserIsOwnerOfNext($nextId)
         return true;
     } else {
         return false;
-    }
-}
-
-function EditNextText($id)
-{
-    if (CheckUserIsOwnerOfNext($id)) {
-        return "confirmed";
-    } else {
-        return;
     }
 }
 

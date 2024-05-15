@@ -6,10 +6,9 @@ switch ($_POST["name"]) {
         echo json_encode(RemoveNextText($_POST["id"]));
         break;
     case "edit":
-        print_r($_POST);
-        //echo json_encode(PostNextText($_POST["title"], $_POST["content"],$_POST["categories"]));
+        echo json_encode(EditNextText($_POST["id"],$_POST["title"],$_POST["content"]));
         break;
     case "next":
-        echo json_encode(PostNextText($_POST["title"], $_POST["content"], $_POST["categories"]));
+        echo json_encode(PostNextText($_POST["title"], $_POST["content"]));
         break;
 }

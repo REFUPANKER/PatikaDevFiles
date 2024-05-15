@@ -1,25 +1,17 @@
 <div class="d-flex justify-content-center align-items-center flex-column h-100">
-    share post
-    <div style="display:flex;flex-direction: column;width:50%;">
-        <input id="nextTitle" style="font-size: 1.3rem;">
-        <textarea id="nextContent" style="font-size:1.2rem;resize: none;height:25vh;"></textarea>
-        <div>
-            <h6>Categories</h6>
-            <div id="categoriesHolder">
-
-            </div>
-        </div>
-        <input id="nextCategories" onkeydown="AddCategory(event)">
-        <button onclick="NextText()">N E X T</button>
+    <div style="background-color: #151515;padding:0.5rem 2rem;border-radius:1rem 1rem 0 0;border:0.05rem solid white;border-bottom:none;">Create new NEXT</div>
+    <div class="p-3 rounded rounded-3" style="display:flex;flex-direction: column;width:50%;background-color: #151515;border:0.05rem solid white;">
+        Title
+        <input id="nextTitle" style="font-size: 1.3rem;" maxlength="128">
+        Content
+        <textarea id="nextContent" maxlength="512" style="font-size:1.2rem;resize: none;height:25vh;margin-bottom:1rem;"></textarea>
+        <button class="btn btn-dark" onclick="NextText()">N E X T</button>
     </div>
 
     <script>
         let shared = false;
         const tId = document.getElementById("nextTitle");
         const tContent = document.getElementById("nextContent");
-        const tCategories = document.getElementById("categoriesHolder");
-        const tCategory = document.getElementById("nextCategories");
-        let categories = [];
 
         function NextText() {
             if (shared) {
@@ -40,7 +32,6 @@
                     name: "next",
                     title: tId.value.toString(),
                     content: tContent.value.toString(),
-                    categories:categories
                 },
                 success: function(obj, textstatus) {
                     if (obj != "null") {
@@ -53,39 +44,6 @@
                     }
                 }
             });
-        }
-
-        function AddCategory(e) {
-            if (e.key == "Enter") {
-                if (!categories.includes(tCategory.value)) {
-                    if (categories.length > 10) {
-                        alert("you can only add 10 categories");
-                    } else {
-                        if (tCategory.value.replace(" ", "").length > 0) {
-                            categories.push(tCategory.value);
-                            tCategories.innerHTML += "<button id=\"" + (categories.length + 1) + "\" onclick=\"removeCategory(" + (categories.length + 1) + ")\">" + tCategory.value + "</button>";
-                            tCategory.value = "";
-                        } else {
-                            alert("type category");
-                        }
-
-                    }
-                } else {
-                    alert("category already exists");
-                }
-            }
-        }
-
-        function removeCategory(itemid) {
-            let item = document.getElementById(itemid);
-            let x = [];
-            categories.forEach(e => {
-                if (e != item.innerText) {
-                    x.push(e);
-                }
-            })
-            categories = x;
-            item.parentElement.removeChild(item);
         }
     </script>
 </div>
