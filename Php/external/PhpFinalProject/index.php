@@ -11,6 +11,7 @@
         <h1>You need to account for continue</h1>
         <h3>Redirecting to auth page</h3>
         <h2 id="cd">5</h2>
+        <a href="auth.php" class="btn btn-success fs-1">Go To Auth</a>
     </div>
     <script>
         const cd = document.getElementById("cd");

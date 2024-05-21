@@ -39,7 +39,8 @@ drop table if exists nexts;
 create table nexts (
 id int primary key AUTO_INCREMENT,
 user int,
-type int not null default 1
+type int not null default 1,
+date datetime not null default current_timestamp
 );
 
 drop table if exists n_Text;
@@ -58,11 +59,13 @@ image mediumblob,
 descr varchar(500)
 );
 
+-- saving videos to server side by their ID s
 drop table if exists n_Video;
 create table n_Video(
 id int primary key AUTO_INCREMENT,
 nextId int,
-video mediumblob,
+--video varchar(128) default UUID(),
+title varchar(128),
 descr varchar(500)
 );
 
@@ -82,3 +85,18 @@ BEGIN
 END
 DELIMITER ;
 
+DELIMITER $
+create trigger bNextImageDelete
+before delete on n_image
+for each row
+BEGIN
+	delete from nexts where id=old.nextid;
+END
+
+DELIMITER $
+create trigger bNextVideoDelete
+before delete on n_video
+for each row
+BEGIN
+	delete from nexts where id=old.nextid;
+END$

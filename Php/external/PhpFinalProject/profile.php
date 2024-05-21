@@ -14,12 +14,10 @@ if (!isset($_SESSION["authed"])) {
 </head>
 
 <body>
-    <div class="whatisnextBackground w-100 h-100 m-0 overflow-auto bgCl2 " style="overflow:auto;height:100vh;">
+    <div class="whatisnextBackground w-100 m-0 overflow-auto bgCl2 " style="overflow:auto;height:100vh;">
         <a class="text-white fs-1" href="./home.php">back to home</a>
         <h1 class="text-center">Profile</h1>
         <?php
-        echo CheckUserIsOwnerOfNext(22);
-
         $sizeLimit = 5;
         if (isset($_POST["updatePfp"]) && isset($_FILES["pfp"])) {
             $file = $_FILES["pfp"];
@@ -57,61 +55,27 @@ if (!isset($_SESSION["authed"])) {
                 <div id="selectedImage" class="bgimg" style="width: 7vmax;height:7vmax;border:0.3vmax solid orange;background-color: rgba(255, 68, 0, 0.5);border-radius: 0.5vmax;"></div>
             </form>
         </div>
-        <div class="d-flex flex-column w-100 justify-content-center align-items-center" style="padding-bottom:2vmax;overflow:auto; ">
+        <div class="d-flex flex-row w-100 justify-content-center bgCl2 p-2">
+            <a class="ml-2 mr-2 text-white btn btn-<?= !isset($_GET["view"])|| $_GET["view"]=="viewNextTexts.php"?"primary":"outline-primary"?> " href="?view=viewNextTexts.php">Texts</a>
+            <a class="ml-2 mr-2 text-white btn btn-<?= isset($_GET["view"])&& $_GET["view"]=="viewNextImages.php"?"primary":"outline-primary"?> " href="?view=viewNextImages.php">Images</a>
+            <a class="ml-2 mr-2 text-white btn btn-<?= isset($_GET["view"])&& $_GET["view"]=="viewNextVideos.php"?"primary":"outline-primary"?> " href="?view=viewNextVideos.php">Videos</a>
+        </div>
+        <div class="d-flex bgCl1 flex-column w-100 min-vh-100 align-items-center" style="padding-bottom:2vmax;overflow:auto; ">
             <?php
-            //TODO:create page for edit text
+            if (isset($_GET["view"])) {
+                if (str_starts_with($_GET["view"], "view") && file_exists($_GET["view"])) {
+                    require_once($_GET["view"]);
+                } else {
+                    echo "<h4 class='alert alert-danger m-3'>page not existing : 404</h4>";
+                }
+            }else{
+                 require_once("viewNextTexts.php") ;
+            }
             ?>
-            <p style="white-space:pre-line;padding:0;">
-                <?php
-                $nTexts = selectData("select nt.id,nt.title,nt.content,n.user from n_text as nt inner join nexts as n on nt.nextId=n.id and n.user=?;", [$_SESSION["user"]], false);
-                foreach ($nTexts as $key) {
-                ?>
-            <div <?php echo "id=\"text$key[0]\"" ?> class="w-75 m-2 p-3" style="background-color:#202020;border-radius:0.5vmax;">
-                <?php
-                    echo "<h2 style='margin:0;'>" . htmlspecialchars($key[1]) . "</h2>";
-                    echo "<p style='width:min-content;word-break:pre-line;white-space:pre;'>".htmlspecialchars($key[2])."</p>";
-                ?>
-                <br></br>
-                <button class=' btn bgCl2hover text-white border border-white' <?php echo "onclick=\"RemoveNext_TextClick('$key[0]')\"" ?>>Remove</button>
-                <form class='d-inline' action="editnext.php" method="post"><button  name="nextId" class="btn bgCl2hover text-white border border-white" value="<?php echo "$key[0]" ?>">Edit</button></form>
-            </div>
-        <?php } ?>
-        </p>
         </div>
     </div>
 </body>
 <script>
-    function RemoveNext_TextClick(id) {
-        jQuery.ajax({
-            type: "post",
-            url: "./managers/nmgText.php",
-            data: {
-                name: "remove",
-                id: id
-            },
-            success: function(obj, textstatus) {
-                if (obj != "null") {
-                    let ntext = document.getElementById("text" + id);
-                    ntext.parentElement.removeChild(ntext);
-                    alert("Removed");
-                }
-            }
-        });
-    }
-
-    function EditNext_TextClick(id) {
-        jQuery.ajax({
-            type: "get",
-            url: "./editnext.php",
-            data: {
-                nextId: id
-            },
-            success: function(response) {
-                window.location = "./editnext.php";
-            },
-        });
-    }
-
     function onProfileImageSelected() {
         var pfpfile = document.getElementById("pfpslct");
         var pfpimg = document.getElementById("selectedImage");

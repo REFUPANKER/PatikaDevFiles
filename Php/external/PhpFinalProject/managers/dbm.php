@@ -164,7 +164,16 @@ function getUserImage($id)
 
 //TODO:fix sql injections
 // NEXTS start
-
+function RemoveNext($tableName, $id)
+{
+    if (CheckUserIsOwnerOfNext($id)) {
+        reqQuery("delete from " . $tableName . " where nextId=?", [$id]);
+        return "deleted";
+    } else {
+        return;
+    }
+}
+// nexts text start
 function PostNextText($title, $content)
 {
     $nextsStmt = reqQuery("INSERT INTO nexts (user, type) VALUES (?, 1)", [$_SESSION["user"]]);
@@ -173,27 +182,73 @@ function PostNextText($title, $content)
     return "posted";
 }
 
-function RemoveNextText($id)
-{
-    if (CheckUserIsOwnerOfNext($id)) {
-        reqQuery("delete from n_text where id=?", [$id]);
-        //next gets removed with trigger
-        return "deleted";
-    } else {
-        return;
-    }
-}
-
 function EditNextText($id, $title, $content)
 {
     if (CheckUserIsOwnerOfNext($id)) {
-        reqQuery("update n_text set " . ($title != "" ? "title=?"  : "") . ($content != "" ? ",content=?" : "") . " where id=?", [$title, $content, $id]);
+        reqQuery("update n_text set " . ($title != "" ? "title=?"  : "") . ($content != "" ? ",content=?" : "") . " where nextId=?", [$title, $content, $id]);
         return "confirmed";
     } else {
         return;
     }
 }
 
+// nexts text end
+// nexts image start
+function PostNextImage($image, $descr)
+{
+    $nextsStmt = reqQuery("INSERT INTO nexts (user, type) VALUES (?, 2)", [$_SESSION["user"]]);
+    $nextsId = $nextsStmt->insert_id;
+    reqQuery("INSERT INTO n_image (nextId, image, descr) VALUES (?, ?, ?)", [$nextsId, $image, $descr]);
+    return "posted";
+}
+
+function EditNextImage($id, $descr)
+{
+    if (CheckUserIsOwnerOfNext($id)) {
+        reqQuery("update n_image set descr=? where nextId=?", [$descr, $id]);
+        return "confirmed";
+    } else {
+        return;
+    }
+}
+// nexts image end
+
+// nexts video start
+function PostNextVideo($video, $title, $descr)
+{
+    // video column holds token for video files on sever side
+    $nextsStmt = reqQuery("INSERT INTO nexts (user, type) VALUES (?, 3)", [$_SESSION["user"]]);
+    $nextsId = $nextsStmt->insert_id;
+    reqQuery("INSERT INTO n_video (nextId, title, descr) VALUES (?, ?, ?)", [$nextsId, $title, $descr]);
+    file_put_contents(GenerateVideoPath($nextsId), "<body style='margin:0;'><video style='height:100%;width:100%;' controls='all' src='$video'></video></body>");
+    return "posted";
+}
+
+function EditNextVideo($id, $title, $descr)
+{
+    if (CheckUserIsOwnerOfNext($id)) {
+        reqQuery("update n_video set title=?,descr=? where nextId=?", [$title, $descr, $id]);
+        return "confirmed";
+    } else {
+        return;
+    }
+}
+
+function RemoveNextVideo($id)
+{
+    if (CheckUserIsOwnerOfNext($id)) {
+        $filename = GenerateVideoPath($id);
+        unlink($filename);
+        RemoveNext("n_video", $id);
+        return "confirmed";
+    } else {
+        return;
+    }
+}
+function GenerateVideoPath($id,$pathBefore=".."){
+    return "$pathBefore/db_videos/from" . $_SESSION["user"] . "_id" . $id . ".html";
+}
+// nexts video end
 
 function CheckUserIsOwnerOfNext($nextId)
 {

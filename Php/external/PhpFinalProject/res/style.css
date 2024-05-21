@@ -149,7 +149,24 @@ button {
     padding-left: 2rem;
     padding-right: 2rem;
 }
-
+.home-sidebar{
+    background-color:var(--cl2);
+    display:flex;
+    flex-direction: column;
+}
+.home-sidebar a{
+    width:100%;
+    color:white !important;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    height: fit-content;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.home-sidebar a:hover{
+    background-color: var(--cl2);
+    border-left: 0.5rem solid white;
+}
 .whatisnextBackground {
     background-color: rgba(0, 0, 0, 0.8);
     position: fixed;
