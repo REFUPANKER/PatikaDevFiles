@@ -3,7 +3,8 @@
         <?php
         $nTexts = selectData("select n.id,nx.image,nx.descr,n.user,n.date from n_image as nx inner join nexts as n on nx.nextId=n.id and n.user=?;", [$_SESSION["user"]], false);
         if (count($nTexts) == 0) {
-            echo "<h6 class='alert alert-warning m-3'>no images yet</h6>";
+            echo "<h6 class='w-25 text-center alert alert-warning m-3'>no images yet</h6>";
+            echo "<a href='home.php?view=sharenextimage.php' class='w-25 btn btn-success'>Share image</a>";
         }
         foreach ($nTexts as $key) {
         ?>
