@@ -9,6 +9,8 @@
                 <div class="w-100 h-100 rounded rounded-3" id="preview" src="" alt="Image Preview" style="border: 1px solid white; padding: 1rem;background-position: center; background-repeat: no-repeat;background-size: contain;"></div>
             </div>
             <div class="ml-1 w-50 h-100 d-flex flex-column">
+            Title
+                <input spellcheck="false" placeholder=">_" id="nextTitle" class="form-control bg-dark text-white" style="font-size: 1.3rem;" maxlength="128">
                 Description
                 <textarea placeholder="describe your image here" id="nextContent" maxlength="512" class="h-100 form-control bg-dark text-white" style="font-size:1.2rem;resize: none;height:25vh;"></textarea>
             </div>
@@ -22,6 +24,7 @@
     <script>
         let shared = false;
         const tImage = document.getElementById("nextImage");
+        const tTitle = document.getElementById("nextTitle");
         const tContent = document.getElementById("nextContent");
         const preview = document.getElementById("preview");
         let selectedImage="";
@@ -38,6 +41,9 @@
                     alert("image out of size limit (5mb)");
                     tImage.value = '';
                     return;
+                }
+                if (tTitle.value.replace(" ", "").length < 1) { // >_ is default title value
+                    tTitle.value=tImage.files[0].name;
                 }
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -57,6 +63,10 @@
                 alert("Select image to share");
                 return;
             }
+            if (tTitle.value.replace(" ", "").length < 1) {
+                alert("Title must be valid");
+                return;
+            }
             if (tContent.value.replace(" ", "").length < 1) {
                 alert("No content ? ok :/");
             }
@@ -66,6 +76,7 @@
                 data: {
                     name: "next",
                     image: selectedImage,
+                    title:tTitle.value.toString(),
                     descr: tContent.value.toString(),
                 },
                 success: function(obj, textstatus) {

@@ -1,8 +1,10 @@
 create database WhatIsNext_PhpGradProj;
+
 drop table if exists users;
 create table users
 (
     id int primary key auto_increment,
+    token varchar(256) default UPPER(UUID()),
     name varchar(256),
     email varchar(256),
     password varchar(256),
@@ -56,6 +58,7 @@ create table n_Image(
 id int primary key AUTO_INCREMENT,
 nextId int,
 image mediumblob,
+title varchar(64),
 descr varchar(500)
 );
 
@@ -64,7 +67,6 @@ drop table if exists n_Video;
 create table n_Video(
 id int primary key AUTO_INCREMENT,
 nextId int,
---video varchar(128) default UUID(),
 title varchar(128),
 descr varchar(500)
 );
@@ -100,3 +102,15 @@ for each row
 BEGIN
 	delete from nexts where id=old.nextid;
 END$
+
+DELIMITER ;
+/*
+------- followers system
+*/
+
+drop table if exists follows;
+create table follows(
+id int primary key AUTO_INCREMENT,
+user int,
+follow int
+);

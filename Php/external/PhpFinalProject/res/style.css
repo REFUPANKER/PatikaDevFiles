@@ -162,9 +162,10 @@ button {
     height: fit-content;
     text-decoration: none;
     transition: 0.3s;
+    border-left: 0 solid white;
 }
 .home-sidebar a:hover{
-    background-color: var(--cl2);
+    background-color: var(--cl1);
     border-left: 0.5rem solid white;
 }
 .whatisnextBackground {
@@ -232,3 +233,4 @@ button {
 .SaveSmallCategoryCard:hover {
     background-color: #209045;
 }
+

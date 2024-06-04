@@ -116,7 +116,11 @@ function addUser($name, $email, $password)
 }
 function getUser($id)
 {
-    return selectData("select id,name,active from users where id= ?;", [$id]);
+    return selectData("select id,name,active,token from users where id= ?;", [$id]);
+}
+function getUserT($token)
+{
+    return selectData("select id,name,active,token from users where token= ?;", [$token]);
 }
 function checkAuth($target = "home.php")
 {
@@ -194,18 +198,18 @@ function EditNextText($id, $title, $content)
 
 // nexts text end
 // nexts image start
-function PostNextImage($image, $descr)
+function PostNextImage($image, $title, $descr)
 {
     $nextsStmt = reqQuery("INSERT INTO nexts (user, type) VALUES (?, 2)", [$_SESSION["user"]]);
     $nextsId = $nextsStmt->insert_id;
-    reqQuery("INSERT INTO n_image (nextId, image, descr) VALUES (?, ?, ?)", [$nextsId, $image, $descr]);
+    reqQuery("INSERT INTO n_image (nextId, image,title, descr) VALUES (?,?, ?, ?)", [$nextsId, $image, $title, $descr]);
     return "posted";
 }
 
-function EditNextImage($id, $descr)
+function EditNextImage($id, $title, $descr)
 {
     if (CheckUserIsOwnerOfNext($id)) {
-        reqQuery("update n_image set descr=? where nextId=?", [$descr, $id]);
+        reqQuery("update n_image set title= ? , descr=? where nextId=?", [$title, $descr, $id]);
         return "confirmed";
     } else {
         return;
@@ -245,7 +249,8 @@ function RemoveNextVideo($id)
         return;
     }
 }
-function GenerateVideoPath($id,$pathBefore=".."){
+function GenerateVideoPath($id, $pathBefore = "..")
+{
     return "$pathBefore/db_videos/from" . $_SESSION["user"] . "_id" . $id . ".html";
 }
 // nexts video end
@@ -261,3 +266,96 @@ function CheckUserIsOwnerOfNext($nextId)
 }
 
 // NEXTS end
+
+
+
+/*
+------- Following system
+*/
+
+function FsFollows($targetId)
+{
+    $data = selectData("select * from follows where user=? and follow=?", [$_SESSION["user"], $targetId]);
+    return isset($data) ? true : null;
+}
+function FsFollowTo($targetId)
+{
+    if (!FsFollows($targetId)) {
+        reqQuery("insert into follows (user,follow) values (?,?)", [$_SESSION["user"], $targetId]);
+    }
+}
+
+function FsUnFollow($targetId)
+{
+    reqQuery("delete from follows where user=? and follow=?", [$_SESSION["user"], $targetId]);
+}
+
+function FsRemoveFollower($targetId)
+{
+    reqQuery("delete from follows where follow=? and user=?", [$_SESSION["user"], $targetId]);
+}
+
+function FsFollowerCount($targetId)
+{
+    $data = selectData("select count(distinct id) as count from follows where follow=?", [$targetId]);
+    return isset($data) ? $data["count"] : 0;
+}
+
+function FsFollowedsCount($targetId)
+{
+    $data = selectData("select count(distinct id) as count from follows where user=?", [$targetId]);
+    return isset($data) ? $data["count"] : 0;
+}
+
+function FsGetFollowersOf($target)
+{
+    $data = selectData("select distinct u.name,u.token,u.id from follows as f join users as u on f.user=u.id where f.follow=?", [$target], false);
+    return isset($data) ? $data : null;
+}
+
+function FsGetFollowedsOf($target)
+{
+    $data = selectData("select distinct u.name,u.token,u.id from follows as f join users as u on u.id=f.follow where f.user=?", [$target], false);
+    return isset($data) ? $data : null;
+}
+
+/*
+------- User search
+*/
+
+function SearchUser($value)
+{
+    return selectData(
+        "select id,token,name from users where id != ? and name like ? or name like ? or name like ? or name like ?",
+        [
+            $_SESSION["user"],
+            "%" . $value . "%",
+            $value . "%",
+            "%" . $value,
+            $value
+        ],
+        false
+    );
+}
+function SearchNext($value)
+{
+    // $img = selectData(
+    //     `select * from nexts as n inner join n_image as nx on n.id=nx.nextId 
+    //     inner join n_video as ny where nx.title like ? or ? or ? or nx.title= ?`,
+    //     [
+    //         "%$value%", "%$value", "$value%", "$value"
+    //     ]
+    // );
+    $txt = selectData(
+        "select n.id,nx.title,nx.descr from nexts as n inner join n_text as nx on n.id=nx.nextId where nx.title like ? order by n.id desc ",
+        ["%$value%"],
+        false
+    );
+    $img = selectData(
+        "select n.id,nx.image,nx.title,nx.descr from nexts as n inner join n_image as nx on n.id=nx.nextId where nx.title like ? order by n.id desc ",
+        ["%$value%"],
+        false
+    );
+    
+    return ["text"=>$txt,"image" => $img];
+}

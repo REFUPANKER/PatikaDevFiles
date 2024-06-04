@@ -16,6 +16,7 @@ $user = getUser($_SESSION["user"]);
     <link rel="stylesheet" href="res/bootstrap.min.css">
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/popper.min.js"></script>
+    <script src="scripts/site.js"></script>
     <script src="scripts/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./res/style.css">
 
@@ -31,12 +32,25 @@ $user = getUser($_SESSION["user"]);
             <button type="submit" class="home-logout-btn" name="logout" value="1">Logout</button>
         </form>
     </div>
-    <div style="background-color: rgba(0,0,0,0.8);display:grid;grid-template-columns:20% auto;" class=" w-100 overflow-auto">
-        <div class="home-sidebar">
+    <div style="background-color: rgba(0,0,0,0.8);" class="m-0 p-0 w-100 overflow-auto d-flex flex-row">
+        <div class="home-sidebar" style="width:20%;">
+            <div class="d-flex flex-column m-2">
+                <a class="mt-5" href="./home.php">Home</a>
+                <a href="?view=news.php">News</a>
+            </div>
             <div class="dropdown mt-3 ml-2 mr-2" data-bs-toggle="dropdown">
-                <h5 class="text-center">Share</h5>
                 <button class="btn bg-dark text-white dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    N E X T
+                    Search
+                </button>
+                <div class="dropdown-menu w-100 bgCl3" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="?view=searchUser.php">User</a>
+                    <a class="dropdown-item" href="?view=searchCategory.php">Category</a>
+                    <a class="dropdown-item" href="?view=searchNext.php">N E X T <i style="font-size:0.8rem;">(by title)</i></a>
+                </div>
+            </div>
+            <div class="dropdown mt-3 ml-2 mr-2" data-bs-toggle="dropdown">
+                <button class="btn bg-dark text-white dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Share N E X T
                 </button>
                 <div class="dropdown-menu w-100 bgCl3" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="?view=sharenexttext.php">Text</a>
@@ -45,16 +59,26 @@ $user = getUser($_SESSION["user"]);
                 </div>
             </div>
         </div>
-        <div>
+        <div class="w-100">
             <?php
             if (isset($_GET["view"])) {
-                if (str_starts_with($_GET["view"], "share") && file_exists($_GET["view"])) {
+                if (
+                    file_exists($_GET["view"]) &&
+                    (
+                        str_starts_with($_GET["view"], "share") ||
+                        str_starts_with($_GET["view"], "search")
+                    )
+                ) {
                     require_once($_GET["view"]);
                 } else {
                     echo "<h4 class='alert alert-danger m-3'>page not existing : 404</h4>";
                 }
-            }
-            ?>
+            } else { ?>
+                <div class="h-100 w-100 d-flex flex-column m-0 p-2 justify-content-center align-items-center">
+                <?php require_once("homeWatchNexts.php");
+            } ?>
+
+                </div>
         </div>
     </div>
 </body>
