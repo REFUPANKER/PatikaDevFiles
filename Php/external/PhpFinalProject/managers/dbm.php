@@ -249,9 +249,9 @@ function RemoveNextVideo($id)
         return;
     }
 }
-function GenerateVideoPath($id, $pathBefore = "..")
+function GenerateVideoPath($id, $pathBefore = "..",$user=-1)
 {
-    return "$pathBefore/db_videos/from" . $_SESSION["user"] . "_id" . $id . ".html";
+    return "$pathBefore/db_videos/from" . ($user==-1?$_SESSION["user"]:$user) . "_id" . $id . ".html";
 }
 // nexts video end
 
@@ -347,15 +347,35 @@ function SearchNext($value)
     //     ]
     // );
     $txt = selectData(
-        "select n.id,nx.title,nx.descr from nexts as n inner join n_text as nx on n.id=nx.nextId where nx.title like ? order by n.id desc ",
-        ["%$value%"],
+        "select n.id,nx.title,nx.content,n.user from nexts as n inner join n_text as nx on n.id=nx.nextId where 
+        nx.title like ? or
+        nx.title like ? or
+        nx.title like ? or
+        nx.title = ?
+        order by n.id desc ",
+        ["%$value%","%$value","$value%","$value"],
         false
     );
     $img = selectData(
-        "select n.id,nx.image,nx.title,nx.descr from nexts as n inner join n_image as nx on n.id=nx.nextId where nx.title like ? order by n.id desc ",
-        ["%$value%"],
+        "select n.id,nx.image,nx.title,nx.descr,n.user from nexts as n inner join n_image as nx on n.id=nx.nextId where 
+        nx.title like ? or
+        nx.title like ? or
+        nx.title like ? or
+        nx.title = ?
+        order by n.id desc ",
+        ["%$value%","%$value","$value%","$value"],
+        false
+    );
+    $video = selectData(
+        "select n.id,n.user,nx.title,nx.descr from nexts as n inner join n_video as nx on n.id=nx.nextId where 
+        nx.title like ? or
+        nx.title like ? or
+        nx.title like ? or
+        nx.title = ?
+        order by n.id desc ",
+        ["%$value%","%$value","$value%","$value"],
         false
     );
     
-    return ["text"=>$txt,"image" => $img];
+    return ["text"=>$txt,"image" => $img,"video"=>$video];
 }

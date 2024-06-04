@@ -16,6 +16,17 @@ function PopUpProfile(token) {
         })
     })
 }
+function PopUpProfileWithId(id) {
+    jQuery.ajax("popupProfile.php", {
+        method: "post",
+        data: {
+            userid:id
+        },
+        success: (e => {
+            document.body.innerHTML += e;
+        })
+    })
+}
 
 function ChangeFollowState(followState, token) {
     jQuery.ajax("./popupProfile.php", {
