@@ -11,6 +11,7 @@ if (!isset($_SESSION["authed"])) {
     <link rel="stylesheet" href="res/bootstrap.min.css">
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/site.js"></script>
+    <script src="scripts/timeout.js"></script>
     <link rel="stylesheet" href="./res/style.css">
 </head>
 

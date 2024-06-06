@@ -17,9 +17,9 @@ $user = getUser($_SESSION["user"]);
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/popper.min.js"></script>
     <script src="scripts/site.js"></script>
+    <script src="scripts/timeout.js"></script>
     <script src="scripts/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./res/style.css">
-
 </head>
 
 <body style="display:grid;grid-template-rows: min-content auto;">

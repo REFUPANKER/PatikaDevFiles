@@ -6,7 +6,17 @@ if ($con->connect_error) {
 }
 
 session_start();
-$inactive = 600;
+
+$inactive = 5 *60;
+if (isset($_SESSION['timeout'])) {
+    $session_life = time() - $_SESSION['timeout'];
+    if ($session_life > $inactive) {
+        session_unset();
+        header("Location: auth.php");
+        exit();
+    }
+}
+$_SESSION['timeout'] = time();
 
 function getPostValue($v)
 {
@@ -269,7 +279,7 @@ function GetSingleNext($id)
 {
     $getNextType = selectData("select * from nexts where id=?", [$id]);
     $nextTypes = array("n_text", "n_image", "n_video");
-    $nextPropertyColumns = ",".($getNextType["type"]==1?"nx.content as content":"nx.descr as descr");
+    $nextPropertyColumns = "," . ($getNextType["type"] == 1 ? "nx.content as content" : "nx.descr as descr");
     return selectData("select nx.*,u.id as userid,u.name as username $nextPropertyColumns from  " . $nextTypes[$getNextType["type"] - 1] . " as nx inner join users as u on u.id=? where nx.nextId=?", [$getNextType["user"], $id]);
 }
 // NEXTS end
@@ -382,3 +392,4 @@ function GetNextsFromFolloweds()
 {
     return selectData("select n.* from nexts as n inner join follows as f on f.follow=n.user where f.user=? order by n.type desc , n.id desc", [$_SESSION["user"]], false);
 }
+
