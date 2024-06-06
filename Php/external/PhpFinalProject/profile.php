@@ -17,6 +17,15 @@ if (!isset($_SESSION["authed"])) {
 <body>
     <div class="whatisnextBackground w-100 m-0 overflow-auto bgCl2 " style="overflow:auto;height:100vh;">
         <a class="text-white fs-1 btn btn-dark m-3" href="./home.php">back to home</a>
+        <a class="text-white fs-1 btn btn-success m-3" href="./managers/excel.php">Save your data to Excel</a>
+        <?php 
+        $logfile="./db_excel/LogsOf_" . $_SESSION['user'] . ".xlsx";
+        if (file_exists($logfile)) {
+        ?>
+            <a class="text-white fs-1 btn btn-warning m-3" href="<?= $logfile?>">Downlaod your Excel data</a>
+        <?php
+        } ?>
+
         <h1 class="text-center">Profile</h1>
         <?php
         $sizeLimit = 5;

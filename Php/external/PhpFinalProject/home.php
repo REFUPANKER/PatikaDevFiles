@@ -25,6 +25,8 @@ $user = getUser($_SESSION["user"]);
 <body style="display:grid;grid-template-rows: min-content auto;">
     <div class="home-navbar">
         <a title="Profile" href="./profile.php" class="home-profile-img" style="<?php getUserImage($user["id"]); ?>"></a>
+        <?php $usernavbardata = getUser($_SESSION["user"]) ?>
+        <h3 class="m-0 p-3" title="<?= $usernavbardata['token'] ?>"><?= $usernavbardata["name"] ?></h3>
         <a title="Home" href="./" class="align-content-center text-center rounded rounded-3 text-decoration-none h-100 border border-5 overflow-hidden border-secondary whatisnextbtn" style="aspect-ratio:3/1;">
             <p class="m-0">What Is Next</p>
         </a>
@@ -44,7 +46,6 @@ $user = getUser($_SESSION["user"]);
                 </button>
                 <div class="dropdown-menu w-100 bgCl3" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="?view=searchUser.php">User</a>
-                    <a class="dropdown-item" href="?view=searchCategory.php">Category</a>
                     <a class="dropdown-item" href="?view=searchNext.php">N E X T <i style="font-size:0.8rem;">(by title)</i></a>
                 </div>
             </div>
@@ -66,7 +67,8 @@ $user = getUser($_SESSION["user"]);
                     file_exists($_GET["view"]) &&
                     (
                         str_starts_with($_GET["view"], "share") ||
-                        str_starts_with($_GET["view"], "search")
+                        str_starts_with($_GET["view"], "search") ||
+                        str_starts_with($_GET["view"], "news")
                     )
                 ) {
                     require_once($_GET["view"]);

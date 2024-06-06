@@ -1,15 +1,4 @@
 <div class="d-flex flex-column align-items-center h-100">
-    <style>
-        .NextItem {
-            transition: 0.2s;
-            cursor: pointer;
-            height: 15vw;
-        }
-
-        .NextItem:hover {
-            transform: scale(1.05);
-        }
-    </style>
     <div class="border border-dark m-2 p-3 w-75 h-100" style="max-height:97%;background-color: #15151590;display:grid;grid-template-rows:min-content auto;">
         <form class="w-100 m-0" method="post" action="home.php?view=searchNext.php">
             <label class="w-100 text-center">Search Next <i>by title</i></label>
@@ -34,6 +23,7 @@
                             foreach ($searchNextResult["text"] as $key => $value) {
                     ?>
                                 <div title="show profile" onclick="PopUpProfileWithId(<?= $value[3] ?>)" class="NextItem overflow-hidden m-2 d-flex flex-column d-flex justify-content-between rounded rounded-3 border border-light" style="width:40%;">
+                                    <h5 class="m-0 w-100 p-1 overflow-hidden" style="background-color: #90909090;height:min-content;" title="<?= $value[4] ?>"><?= $value[4] ?></h5>
                                     <h4 class="m-0 h-25 p-1" style="background-color: #60606090;"><?= htmlspecialchars($value[1]) ?></h4>
                                     <p class="text-wrap w-100 h-75 overflow-auto m-0 p-1" style="background-color: #25252590;">
                                         <?= htmlspecialchars($value[2]) ?>
@@ -53,9 +43,12 @@
                             foreach ($searchNextResult["image"] as $key => $value) {
                     ?>
                                 <div title="show profile" onclick="PopUpProfileWithId(<?= $value[4] ?>)" class="NextItem overflow-hidden m-2 d-flex flex-column d-flex justify-content-end rounded rounded-3 border border-light" style="aspect-ratio: 1;background-color: #252525;background-image:url('<?= $value[1] ?>');background-repeat:no-repeat;background-size:contain;background-position:center;">
-                                    <p class="text-wrap w-100 overflow-auto m-0 p-1" style="max-height:50%;height:auto;background-color: #15151590;">
-                                        <?= htmlspecialchars($value[3]) ?>
-                                    </p>
+                                    <h5 class="m-0 w-100 p-1 overflow-hidden" style="background-color: #25252590;height:min-content;" title="<?= $value[5] ?>"><?= $value[5] ?></h5>
+                                    <?php if (isset($value[3]) && strlen($value[3])) { ?>
+                                        <p class="text-wrap w-100 overflow-auto m-0 p-1" style="max-height:30%;height:auto;background-color: #15151590;">
+                                            <?= htmlspecialchars($value[3]) ?>
+                                        </p>
+                                    <?php } ?>
                                 </div>
 
                     <?php }
@@ -70,12 +63,15 @@
                         if (count($searchNextResult["video"]) > 0) {
                             foreach ($searchNextResult["video"] as $key => $value) {
                     ?>
-                                <div title="show profile" onclick="PopUpProfileWithId(<?= $value[1] ?>)" class="NextItem overflow-hidden m-2 d-flex flex-column d-flex justify-content-between rounded rounded-3 border border-light w-50" style="height:20vw;background-color:#151515;">
-                                    <h4 class="m-0 p-1" style="height:min-content;background-color: #60606090;"><?= htmlspecialchars($value[2]) ?></h4>
+                                <div title="show profile" onclick="PopUpProfileWithId(<?= $value[1] ?>)" class="NextItem overflow-hidden m-2 d-flex flex-column d-flex justify-content-between rounded rounded-3 border border-light w-50" style="height:25vw;background-color:#151515;">
+                                    <h5 class="m-0 w-100 p-1 overflow-hidden" style="min-height:10%;background-color: #90909090;" title="<?= $value[4] ?>"><?= $value[4] ?></h5>
                                     <iframe class="h-100" src="<?= GenerateVideoPath($value[0], ".", $value[1]) ?>"></iframe>
-                                    <p class="text-wrap w-100 h-25 overflow-auto m-0 p-1" style="background-color: #25252590;">
-                                        <?= htmlspecialchars($value[3]) ?>qwe
-                                    </p>
+                                    <h4 class="m-0 p-1" style="height:min-content;background-color: #60606090;" title="<?= htmlspecialchars($value[2]) ?>"><?= htmlspecialchars($value[2]) ?></h4>
+                                    <?php if (isset($value[3]) && strlen($value[3])) { ?>
+                                        <p class="text-wrap w-100 h-25 overflow-auto m-0 p-1" style="background-color: #25252590;" title="<?= htmlspecialchars($value[3]) ?>">
+                                            <?= htmlspecialchars($value[3]) ?>
+                                        </p>
+                                    <?php } ?>
                                 </div>
                 <?php
                             }

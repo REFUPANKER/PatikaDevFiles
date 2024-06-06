@@ -26,7 +26,7 @@
         }
         ?>
         <div class="w-25 rounded rounded-3 border border-light" style="aspect-ratio:1;background-position:center;background-repeat:no-repeat;background-size:cover;<?= getUserImage($PPprofileData["id"]); ?>"></div>
-        <h1 class=" d-flex m-0 p-0 align-content-center"><?= $PPprofileData["name"] ?></h1>
+        <h1 class=" d-flex m-0 p-0 align-content-center" title="<?=$PPprofileData['id']?>"><?= $PPprofileData["name"] ?></h1>
         <div class="m-0 d-flex justify-content-around">
             <?= "<h3 class='m-2 btn text-white align-content-center bg-" . ($PPprofileData["active"] == 1 ? "success" : "danger") . "'>" . ($PPprofileData["active"] == 1 ? "Active" : "Deactive") . "</h3>"; ?>
             <?php

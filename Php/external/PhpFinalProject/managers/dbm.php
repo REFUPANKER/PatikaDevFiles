@@ -249,9 +249,9 @@ function RemoveNextVideo($id)
         return;
     }
 }
-function GenerateVideoPath($id, $pathBefore = "..",$user=-1)
+function GenerateVideoPath($id, $pathBefore = "..", $user = -1)
 {
-    return "$pathBefore/db_videos/from" . ($user==-1?$_SESSION["user"]:$user) . "_id" . $id . ".html";
+    return "$pathBefore/db_videos/from" . ($user == -1 ? $_SESSION["user"] : $user) . "_id" . $id . ".html";
 }
 // nexts video end
 
@@ -265,6 +265,13 @@ function CheckUserIsOwnerOfNext($nextId)
     }
 }
 
+function GetSingleNext($id)
+{
+    $getNextType = selectData("select * from nexts where id=?", [$id]);
+    $nextTypes = array("n_text", "n_image", "n_video");
+    $nextPropertyColumns = ",".($getNextType["type"]==1?"nx.content as content":"nx.descr as descr");
+    return selectData("select nx.*,u.id as userid,u.name as username $nextPropertyColumns from  " . $nextTypes[$getNextType["type"] - 1] . " as nx inner join users as u on u.id=? where nx.nextId=?", [$getNextType["user"], $id]);
+}
 // NEXTS end
 
 
@@ -320,7 +327,7 @@ function FsGetFollowedsOf($target)
 }
 
 /*
-------- User search
+------- Search
 */
 
 function SearchUser($value)
@@ -339,43 +346,39 @@ function SearchUser($value)
 }
 function SearchNext($value)
 {
-    // $img = selectData(
-    //     `select * from nexts as n inner join n_image as nx on n.id=nx.nextId 
-    //     inner join n_video as ny where nx.title like ? or ? or ? or nx.title= ?`,
-    //     [
-    //         "%$value%", "%$value", "$value%", "$value"
-    //     ]
-    // );
     $txt = selectData(
-        "select n.id,nx.title,nx.content,n.user from nexts as n inner join n_text as nx on n.id=nx.nextId where 
-        nx.title like ? or
-        nx.title like ? or
+        "select n.id,nx.title,nx.content,n.user,u.name from nexts as n inner join n_text as nx on n.id=nx.nextId inner join users as u on n.user=u.id where 
         nx.title like ? or
         nx.title = ?
         order by n.id desc ",
-        ["%$value%","%$value","$value%","$value"],
+        ["%$value%", $value],
         false
     );
     $img = selectData(
-        "select n.id,nx.image,nx.title,nx.descr,n.user from nexts as n inner join n_image as nx on n.id=nx.nextId where 
-        nx.title like ? or
-        nx.title like ? or
+        "select n.id,nx.image,nx.title,nx.descr,n.user,u.name from nexts as n inner join n_image as nx on n.id=nx.nextId inner join users as u on n.user=u.id where 
         nx.title like ? or
         nx.title = ?
         order by n.id desc ",
-        ["%$value%","%$value","$value%","$value"],
+        ["%$value%", $value],
         false
     );
     $video = selectData(
-        "select n.id,n.user,nx.title,nx.descr from nexts as n inner join n_video as nx on n.id=nx.nextId where 
-        nx.title like ? or
-        nx.title like ? or
+        "select n.id,n.user,nx.title,nx.descr,u.name from nexts as n inner join n_video as nx on n.id=nx.nextId inner join users as u on n.user=u.id where 
         nx.title like ? or
         nx.title = ?
         order by n.id desc ",
-        ["%$value%","%$value","$value%","$value"],
+        ["%$value%", $value],
         false
     );
-    
-    return ["text"=>$txt,"image" => $img,"video"=>$video];
+
+    return ["text" => $txt, "image" => $img, "video" => $video];
+}
+
+/*
+------- NEXTS from followeds
+*/
+
+function GetNextsFromFolloweds()
+{
+    return selectData("select n.* from nexts as n inner join follows as f on f.follow=n.user where f.user=? order by n.type desc , n.id desc", [$_SESSION["user"]], false);
 }

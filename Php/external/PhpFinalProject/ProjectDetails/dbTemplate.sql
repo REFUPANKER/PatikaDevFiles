@@ -10,7 +10,7 @@ create table users
     password varchar(256),
     active int default 1
 );
-
+insert into users (name,email,password) values ("admin","admin@admin.admin","nimda");
 drop table if exists profileImages;
 create table profileImages
 (
@@ -71,39 +71,6 @@ title varchar(128),
 descr varchar(500)
 );
 
--- drop table if exists n_categories;
--- create table n_categories(
--- id int primary key AUTO_INCREMENT,
--- nextId int,
--- category varchar(256)
--- );
-
-DELIMITER $
-create trigger bNextTextDelete
-before delete on n_text
-for each row
-BEGIN
-	delete from nexts where id=old.nextid;
-END
-DELIMITER ;
-
-DELIMITER $
-create trigger bNextImageDelete
-before delete on n_image
-for each row
-BEGIN
-	delete from nexts where id=old.nextid;
-END
-
-DELIMITER $
-create trigger bNextVideoDelete
-before delete on n_video
-for each row
-BEGIN
-	delete from nexts where id=old.nextid;
-END$
-
-DELIMITER ;
 /*
 ------- followers system
 */
@@ -114,3 +81,46 @@ id int primary key AUTO_INCREMENT,
 user int,
 follow int
 );
+
+
+-- drop table if exists n_categories;
+-- create table n_categories(
+-- id int primary key AUTO_INCREMENT,
+-- nextId int,
+-- category varchar(256)
+-- );
+/*
+
+----------- TRIGGERS
+
+*/
+drop trigger if exists bNextTextDelete;
+DELIMITER $
+create trigger bNextTextDelete
+before delete on n_text
+for each row
+BEGIN
+	delete from nexts where id=old.nextid;
+END
+DELIMITER ;
+
+drop trigger if exists bNextImageDelete;
+DELIMITER $
+create trigger bNextImageDelete
+before delete on n_image
+for each row
+BEGIN
+	delete from nexts where id=old.nextid;
+END
+DELIMITER ;
+
+drop trigger if exists bNextVideoDelete;
+DELIMITER $
+create trigger bNextVideoDelete
+before delete on n_video
+for each row
+BEGIN
+	delete from nexts where id=old.nextid;
+END$
+
+DELIMITER ;
