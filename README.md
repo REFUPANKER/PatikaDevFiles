@@ -5,6 +5,9 @@
 </div>
 
 
-## [Java Projeleri / Ödevleri](https://github.com/REFUPANKER/PatikaDevFiles/tree/UsuallyUsedLanugages/Java-OOP/Java101-Practic)
-## [Javascript Projeleri / Ödevleri](https://github.com/REFUPANKER/PatikaDevFiles/tree/PatikaDev/Javascript)
+## [CSharp](https://github.com/REFUPANKER/PatikaDevFiles/tree/PatikaDev/CSharp)
+## [Java](https://github.com/REFUPANKER/PatikaDevFiles/tree/PatikaDev/Java-OOP)
+## [Javascript](https://github.com/REFUPANKER/PatikaDevFiles/tree/PatikaDev/Javascript)
+## [Php](https://github.com/REFUPANKER/PatikaDevFiles/tree/PatikaDev/Php)
+## [Sql](https://github.com/REFUPANKER/PatikaDevFiles/tree/PatikaDev/Sql)
 
